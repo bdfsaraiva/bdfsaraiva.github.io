@@ -77,30 +77,33 @@ const profileLinks = [
           </noscript>
         )
       }
-
-      <div class="bio">
-        {profile.bio.map((paragraph) => <p>{localized(paragraph, locale)}</p>)}
-      </div>
     </div>
   </section>
 
-  {
-    profile.featured && profile.featured.length > 0 && (
-      <section class="container block" aria-labelledby="featured-title">
-        <h2 class="section-label" id="featured-title">
-          {t(locale, 'home.featured')}
-        </h2>
-        <ul class="featured">
-          {profile.featured.map((item) => (
-            <li>
-              <a href={item.path ? localizePath(item.path, locale) : item.url}>{item.title}</a>
-              <p>{localized(item.meta, locale)}</p>
-            </li>
-          ))}
-        </ul>
-      </section>
-    )
-  }
+  <!-- Bio and selected work side by side on wide screens, so the evidence is visible without scrolling. -->
+  <div class="container lead">
+    <div class="bio">
+      {profile.bio.map((paragraph) => <p>{localized(paragraph, locale)}</p>)}
+    </div>
+
+    {
+      profile.featured && profile.featured.length > 0 && (
+        <section class="featured-block" aria-labelledby="featured-title">
+          <h2 class="section-label" id="featured-title">
+            {t(locale, 'home.featured')}
+          </h2>
+          <ul class="featured">
+            {profile.featured.map((item) => (
+              <li>
+                <a href={item.path ? localizePath(item.path, locale) : item.url}>{item.title}</a>
+                <p>{localized(item.meta, locale)}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+  </div>
 
   <section class="container block" aria-labelledby="interests-title">
     <h2 class="section-label" id="interests-title">{t(locale, 'home.interests')}</h2>
@@ -120,7 +123,7 @@ const profileLinks = [
   .hero {
     display: grid;
     gap: 28px;
-    padding-block: clamp(40px, 8vw, 88px) 48px;
+    padding-block: clamp(40px, 7vw, 72px) 40px;
   }
 
   .name {
@@ -193,12 +196,29 @@ const profileLinks = [
     color: var(--fg-muted);
   }
 
+  .lead {
+    display: grid;
+    gap: 40px;
+    padding-bottom: 48px;
+  }
+
   .bio {
     display: grid;
     gap: 14px;
-    max-width: 60ch;
-    margin-top: 28px;
+    max-width: 62ch;
     font-size: 1.0625rem;
+  }
+
+  /* The first paragraph is the summary; the rest is detail. */
+  .bio p:first-child {
+    font-size: 1.1875rem;
+    line-height: 1.55;
+  }
+
+  .featured-block {
+    display: grid;
+    gap: 16px;
+    align-content: start;
   }
 
   /* The source photo is already round: show it as a circle so the grey corners disappear. */
@@ -240,7 +260,7 @@ const profileLinks = [
   }
 
   .featured li {
-    padding-block: 14px;
+    padding-block: 12px;
     border-top: 1px solid var(--border);
   }
 
@@ -249,6 +269,8 @@ const profileLinks = [
   }
 
   .featured a {
+    display: inline-block;
+    padding-block: 4px;
     font-weight: 600;
     text-decoration: none;
   }
@@ -277,12 +299,19 @@ const profileLinks = [
   @media (min-width: 860px) {
     .hero {
       grid-template-columns: 220px 1fr;
-      align-items: start;
+      align-items: center;
       gap: 56px;
     }
 
     .portrait {
       margin-top: 8px;
+    }
+  }
+
+  @media (min-width: 960px) {
+    .lead {
+      grid-template-columns: minmax(0, 62ch) minmax(260px, 1fr);
+      gap: 56px;
     }
   }
 </style>

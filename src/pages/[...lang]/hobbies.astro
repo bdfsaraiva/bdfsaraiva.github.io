@@ -15,11 +15,12 @@ const primary = stats
   ? [
       { value: stats.ytd.distanceKm, unit: 'km', label: t(locale, 'hobbies.stat.ytdKm', { year }) },
       { value: stats.ytd.elevationM, unit: 'm', label: t(locale, 'hobbies.stat.ytdElev', { year }) },
-      { value: stats.ytd.count, unit: '', label: t(locale, stats.ytd.count === 1 ? 'hobbies.stat.ytdRides.one' : 'hobbies.stat.ytdRides.other', { year }) },
     ]
   : [];
+// Two headline figures, then four supporting ones: both rows divide evenly into 2 (mobile) and 2/4 (desktop) columns.
 const secondary = stats
   ? [
+      { value: stats.ytd.count, unit: '', label: t(locale, stats.ytd.count === 1 ? 'hobbies.stat.ytdRides.one' : 'hobbies.stat.ytdRides.other', { year }) },
       { value: stats.all.distanceKm, unit: 'km', label: t(locale, 'hobbies.stat.allKm') },
       { value: stats.longestRideKm, unit: 'km', label: t(locale, 'hobbies.stat.longest') },
       { value: stats.biggestClimbM, unit: 'm', label: t(locale, 'hobbies.stat.climb') },
@@ -86,7 +87,7 @@ const padelPhoto = publicFileExists(padel.photo) ? padel.photo : undefined;
   <section class="band football" aria-labelledby="football-title">
     <div class="band-head">
       <h2 id="football-title">{t(locale, 'hobbies.football')}</h2>
-      <span class="scoreboard" aria-hidden="true">FT · 2021</span>
+      <span class="scoreboard">{t(locale, 'hobbies.until', { year: 2021 })}</span>
     </div>
     <div class="football-body">
       <p class="position">{localized(football.position, locale)}</p>
@@ -614,6 +615,7 @@ const padelPhoto = publicFileExists(padel.photo) ? padel.photo : undefined;
     display: flex;
     align-items: baseline;
     gap: 0.18em;
+    line-height: 0.9;
   }
 
   .unit {
@@ -678,8 +680,8 @@ const padelPhoto = publicFileExists(padel.photo) ? padel.photo : undefined;
   }
 
   @media (min-width: 720px) {
-    .stats {
-      grid-template-columns: repeat(3, 1fr);
+    .secondary {
+      grid-template-columns: repeat(4, 1fr);
     }
   }
 
@@ -770,7 +772,15 @@ const padelPhoto = publicFileExists(padel.photo) ? padel.photo : undefined;
     color: var(--hb-muted);
   }
 
+  .hb-footer {
+    align-items: center;
+  }
+
   .hb-footer a {
+    display: inline-grid;
+    place-items: center;
+    min-width: 44px;
+    min-height: 44px;
     text-decoration: none;
     color: var(--hb-lime);
   }

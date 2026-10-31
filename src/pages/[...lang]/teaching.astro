@@ -41,7 +41,7 @@ function period(course: Course): string {
             <p class="legend">
               {section.acronyms.map((code, i) => (
                 <span>
-                  {i > 0 && ' · '}
+                  {i > 0 && ' · '}
                   <b>{code}</b> {localized(programmes[code].name, locale)}
                 </span>
               ))}
@@ -63,9 +63,13 @@ function period(course: Course): string {
                           const programme = programmes[code];
                           return (
                             <>
-                              {i > 0 && ' · '}
+                              {i > 0 && ' · '}
+                              {/* The title only shows on hover, so screen readers also get the full name. */}
                               {programme?.acronym ? (
-                                <abbr title={localized(programme.name, locale)}>{code}</abbr>
+                                <abbr title={localized(programme.name, locale)}>
+                                  <span aria-hidden="true">{code}</span>
+                                  <span class="visually-hidden">{localized(programme.name, locale)}</span>
+                                </abbr>
                               ) : programme ? (
                                 localized(programme.name, locale)
                               ) : (
@@ -81,7 +85,7 @@ function period(course: Course): string {
                   </p>
                 </div>
                 <div class="course-side">
-                  {current && <span class="current-tag">{t(locale, 'teaching.current')}</span>}
+                  {!current && <span class="past-tag">{t(locale, 'teaching.past')}</span>}
                   {course.syllabus && (
                     <a class="syllabus" href={course.syllabus}>
                       {t(locale, 'teaching.syllabus')}
@@ -168,7 +172,8 @@ function period(course: Course): string {
     color: var(--fg-muted);
   }
 
-  .course-meta > span + span::before {
+  /* The dot trails the previous item, so a wrapped line never starts with a separator. */
+  .course-meta > span:not(:last-child)::after {
     content: '·';
     margin-inline: 8px;
     color: var(--fg-faint);
@@ -192,21 +197,10 @@ function period(course: Course): string {
     gap: 8px 20px;
   }
 
-  .current-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
+  /* Only the exceptions are marked: most courses are current, so a "current" badge would say nothing. */
+  .past-tag {
     font-size: 0.875rem;
-    font-weight: 600;
-    color: var(--level);
-  }
-
-  .current-tag::before {
-    content: '';
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: currentColor;
+    color: var(--fg-muted);
   }
 
   .syllabus {

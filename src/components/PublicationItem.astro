@@ -58,7 +58,7 @@ const citationsKey = pub.citations === 1 ? 'pubs.citations.one' : 'pubs.citation
     {links.map((link) => <a href={link.url}>{t(locale, `pubs.link.${link.key}`)}</a>)}
     {
       pub.bibtex && (
-        <button type="button" data-bibtex={bibId} data-copied={t(locale, 'pubs.copied')} data-failed={t(locale, 'pubs.copyFailed')}>{t(locale, 'pubs.bibtex')}</button>
+        <button type="button" class="copy" data-bibtex={bibId} data-copied={t(locale, 'pubs.copied')} data-failed={t(locale, 'pubs.copyFailed')}>{t(locale, 'pubs.bibtex')}</button>
       )
     }
   </div>
@@ -95,7 +95,8 @@ const citationsKey = pub.citations === 1 ? 'pubs.citations.one' : 'pubs.citation
     color: var(--fg-muted);
   }
 
-  .meta > span + span::before {
+  /* The dot trails the previous item, so a wrapped line never starts with a separator. */
+  .meta > span:not(:last-child)::after {
     content: '·';
     margin-inline: 8px;
     color: var(--fg-faint);
@@ -153,8 +154,19 @@ const citationsKey = pub.citations === 1 ? 'pubs.citations.one' : 'pubs.citation
     margin-top: 4px;
   }
 
+  /* An action, not a link: no underline, so it does not read as another destination. */
+  .actions .copy {
+    text-decoration: none;
+    color: var(--fg-muted);
+  }
+
+  .actions .copy:hover {
+    color: var(--accent);
+  }
+
   .abstract summary {
     width: fit-content;
+    padding-block: 6px;
     font-size: 0.8125rem;
     color: var(--fg-muted);
     cursor: pointer;

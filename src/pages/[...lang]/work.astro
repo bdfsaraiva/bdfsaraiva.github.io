@@ -162,7 +162,7 @@ const locale = localeFromParam(Astro.params.lang);
   }
 
   .tags .chip {
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
   }
 
   .card-links {
@@ -241,11 +241,11 @@ const locale = localeFromParam(Astro.params.lang);
 
   @media (min-width: 760px) {
     .service-list li {
-      grid-template-columns: 140px 1fr;
+      grid-template-columns: var(--rail) 1fr;
     }
 
     .project {
-      grid-template-columns: 140px 1fr;
+      grid-template-columns: var(--rail) 1fr;
     }
 
     .project-meta {

@@ -30,6 +30,8 @@
   --radius: 10px;
   --radius-sm: 6px;
   --container: 1040px;
+  /* Shared left rail for "year + entry" rows (publications, projects, service). */
+  --rail: 120px;
   --gutter: 16px;
   --header-h: 60px;
 
