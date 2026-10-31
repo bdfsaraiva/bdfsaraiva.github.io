@@ -31,8 +31,7 @@ function period(course: Course): string {
   {
     sections.map((section) => (
       <section class={`container stack-section level-${section.level}`} aria-labelledby={`level-${section.level}`}>
-        {/* The level is shown by colour; the heading is kept for screen readers only. */}
-        <h2 class="visually-hidden" id={`level-${section.level}`}>
+        <h2 class="section-label level-title" id={`level-${section.level}`}>
           {t(locale, `teaching.level.${section.level}`)}
         </h2>
         <ul class="card-grid courses">
@@ -64,13 +63,18 @@ function period(course: Course): string {
                     </div>
                   )}
                 </dl>
-                {course.links && course.links.length > 0 && (
-                  <div class="bracket-links course-links">
-                    {course.links.map((link) => (
-                      <a href={link.url}>{localized(link.label, locale)}</a>
-                    ))}
-                  </div>
-                )}
+                <div class="course-actions">
+                  {course.syllabus ? (
+                    <a class="syllabus-btn mono" href={course.syllabus}>
+                      {t(locale, 'teaching.syllabus')}
+                    </a>
+                  ) : (
+                    <span class="syllabus-btn mono is-pending" aria-disabled="true" title={t(locale, 'teaching.soon')}>
+                      {t(locale, 'teaching.syllabus')}
+                      <span class="visually-hidden"> ({t(locale, 'teaching.soon')})</span>
+                    </span>
+                  )}
+                </div>
               </li>
             );
           })}
@@ -164,9 +168,45 @@ function period(course: Course): string {
     margin: 0;
   }
 
-  .course-links {
+  /* Group subtitle takes the level colour ("// Licenciaturas"). */
+  .level-title {
+    font-size: 0.875rem;
+    color: var(--fg);
+    text-transform: none;
+  }
+
+  .level-title::before {
+    color: var(--level);
+  }
+
+  .course-actions {
     margin-top: auto;
-    padding-top: 4px;
+    padding-top: 6px;
+  }
+
+  .syllabus-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 12px;
+    border: 1px solid var(--level);
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--level);
+    text-decoration: none;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+
+  a.syllabus-btn:hover {
+    background: var(--level);
+    color: var(--level-fg);
+  }
+
+  .syllabus-btn.is-pending {
+    border-style: dashed;
+    border-color: var(--border-strong);
+    color: var(--fg-muted);
+    cursor: default;
   }
 
   /* Courses currently taught: frame and tinted background in the level colour, plus a "Current" badge. */

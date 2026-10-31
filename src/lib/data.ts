@@ -44,10 +44,8 @@ export const strava = stravaJson as StravaData;
 /** A course without an end year is still being taught. */
 export const isCurrentCourse = (course: Course) => course.to == null;
 
-/** Current courses first (newest first), then past ones by the year they ended. */
-export const courses = ((parse(coursesRaw) as Course[] | null) ?? []).toSorted(
-  (a, b) => (b.to ?? Infinity) - (a.to ?? Infinity) || b.from - a.from,
-);
+/** Courses in the order written in courses.yaml (the order is chosen by hand). */
+export const courses = (parse(coursesRaw) as Course[] | null) ?? [];
 
 /** True when `public/<path>` exists at build time (e.g. the CV or a photo). */
 export function publicFileExists(path: string | undefined): boolean {

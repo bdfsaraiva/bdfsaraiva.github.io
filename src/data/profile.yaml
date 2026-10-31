@@ -35,24 +35,23 @@ bio:
       da Universidade Lusófona, onde leciono programação e aprendizagem automática. Sou também doutorando
       em Informática.
   - en: >-
-      My research combines natural language processing with the study of how participants coordinate in
+      My research combines Natural Language Processing (NLP) with the study of how participants coordinate in
       conversation. I develop open-source tools for analysing multi-party conversations, such as ParShift
-      and LACE, and study how large language models generate scientific code. In the European project
+      and LACE, and study how Large Language Models (LLMs) generate scientific code. In the European project
       CresCine, I work with audience and film-industry data.
     pt: >-
-      A minha investigação combina o processamento de linguagem natural com o estudo da coordenação entre
+      A minha investigação combina Natural Language Processing (NLP) com o estudo da coordenação entre
       participantes em conversa. Desenvolvo ferramentas open source para a análise de conversas com
-      múltiplos participantes, como o ParShift e o LACE, e estudo a forma como os grandes modelos de
-      linguagem geram código científico. No projeto europeu CresCine, trabalho com dados de audiências e
+      múltiplos participantes, como o ParShift e o LACE, e estudo a forma como os Large Language Models
+      (LLMs) geram código científico. No projeto europeu CresCine, trabalho com dados de audiências e
       da indústria cinematográfica.
 
 interests:
-  - en: Natural language processing
-    pt: Processamento de linguagem natural
+  # Technical terms such as NLP and LLMs stay in English in both languages.
+  - Natural Language Processing (NLP)
   - en: Conversation analysis
     pt: Análise de conversação
-  - en: Large language models
-    pt: Grandes modelos de linguagem
+  - Large Language Models (LLMs)
   - en: Computational social science
     pt: Ciências sociais computacionais
   - en: Data science

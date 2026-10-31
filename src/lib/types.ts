@@ -104,7 +104,8 @@ export interface Course {
   /** Last year taught; omit while still teaching it (the course is then shown as current). */
   to?: number;
   role?: Localized;
-  links?: LinkItem[];
+  /** URL of the course syllabus; without it the button is shown as "available soon". */
+  syllabus?: string;
 }
 
 export interface Hobbies {

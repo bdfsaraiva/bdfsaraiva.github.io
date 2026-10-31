@@ -21,3 +21,4 @@ Thumbs.db
 # local agent state / screenshots
 .omc/
 .playwright-mcp/
+.claude/logs/

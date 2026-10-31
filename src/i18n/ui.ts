@@ -7,7 +7,7 @@ export type Localized = string | Partial<Record<Locale, string>>;
 
 const en = {
   'meta.description':
-    'Bruno D. Ferreira-Saraiva, Assistant Professor at Universidade Lusófona. Natural language processing, conversation analysis and large language models.',
+    'Bruno D. Ferreira-Saraiva, Assistant Professor at Universidade Lusófona. Natural Language Processing (NLP), conversation analysis and Large Language Models (LLMs).',
   'nav.skip': 'Skip to content',
   'nav.home': 'home',
   'nav.publications': 'publications',
@@ -72,15 +72,17 @@ const en = {
 
   'teaching.title': 'Teaching',
   'teaching.description': 'Courses taught by Bruno D. Ferreira-Saraiva.',
-  'teaching.intro': 'Courses I teach or have taught, grouped by degree level and in reverse chronological order. Courses taught in the current academic year are highlighted.',
-  'teaching.level.bsc': "Bachelor's (BSc)",
-  'teaching.level.msc': "Master's (MSc)",
-  'teaching.level.postgrad': 'Postgraduate',
+  'teaching.intro': 'Courses I teach or have taught, grouped by degree level. Courses taught in the current academic year are highlighted.',
+  'teaching.level.bsc': "Bachelor's degrees",
+  'teaching.level.msc': "Master's degrees",
+  'teaching.level.postgrad': 'Postgraduate programmes',
   'teaching.current': 'Current',
   'teaching.role': 'Role',
   'teaching.years': 'Years',
   'teaching.present': 'present',
   'teaching.programmes': 'Programmes',
+  'teaching.syllabus': 'Syllabus',
+  'teaching.soon': 'Available soon',
 
 
   '404.title': 'Page not found',
@@ -120,7 +122,7 @@ export type UiKey = keyof typeof en;
 
 const pt: Record<UiKey, string> = {
   'meta.description':
-    'Bruno D. Ferreira-Saraiva, Professor Assistente na Universidade Lusófona. Processamento de linguagem natural, análise de conversação e grandes modelos de linguagem.',
+    'Bruno D. Ferreira-Saraiva, Professor Assistente na Universidade Lusófona. Natural Language Processing (NLP), análise de conversação e Large Language Models (LLMs).',
   'nav.skip': 'Saltar para o conteúdo',
   'nav.home': 'início',
   'nav.publications': 'publicações',
@@ -185,15 +187,17 @@ const pt: Record<UiKey, string> = {
 
   'teaching.title': 'Ensino',
   'teaching.description': 'Unidades curriculares lecionadas por Bruno D. Ferreira-Saraiva.',
-  'teaching.intro': 'Unidades curriculares que leciono ou lecionei, agrupadas por ciclo de estudos e por ordem cronológica inversa. As do ano letivo em curso estão destacadas.',
-  'teaching.level.bsc': 'Licenciatura (BSc)',
-  'teaching.level.msc': 'Mestrado (MSc)',
-  'teaching.level.postgrad': 'Pós-graduação',
+  'teaching.intro': 'Unidades curriculares que leciono ou lecionei, agrupadas por ciclo de estudos. As do ano letivo em curso estão destacadas.',
+  'teaching.level.bsc': 'Licenciaturas',
+  'teaching.level.msc': 'Mestrados',
+  'teaching.level.postgrad': 'Pós-graduações',
   'teaching.current': 'Atual',
   'teaching.role': 'Papel',
   'teaching.years': 'Anos',
   'teaching.present': 'presente',
   'teaching.programmes': 'Cursos',
+  'teaching.syllabus': 'Conteúdos programáticos',
+  'teaching.soon': 'Disponível em breve',
 
 
   '404.title': 'Página não encontrada',
