@@ -9,18 +9,18 @@
   --border: #dcdfd9;
   --border-strong: #b9beb6;
   --grid: rgb(20 23 26 / 0.055);
-  --accent: #0b7a75;
-  --accent-strong: #075e5a;
-  --accent-soft: #e2f2f0;
+  --accent: #22636d;
+  --accent-strong: #194a52;
+  --accent-soft: #e4eff0;
   --accent-fg: #ffffff;
-  --focus: #0b7a75;
+  --focus: #22636d;
   --shadow: 0 1px 0 rgb(20 23 26 / 0.04), 0 8px 24px -16px rgb(20 23 26 / 0.18);
   /* Teaching levels: BSc uses the site accent; MSc violet; postgraduate amber. */
-  --msc: #5b4fd1;
-  --msc-soft: #ecebfb;
+  --msc: #57509a;
+  --msc-soft: #ecebf5;
   --msc-fg: #ffffff;
-  --pg: #a85508;
-  --pg-soft: #fbefe1;
+  --pg: #8f5a1e;
+  --pg-soft: #f6eee3;
   --pg-fg: #ffffff;
 
   --font-sans: 'IBM Plex Sans Variable', 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -37,52 +37,52 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
-    --bg: #0d1013;
-    --bg-elev: #13171b;
-    --bg-sunken: #0a0c0e;
+    --bg: #121417;
+    --bg-elev: #181b1f;
+    --bg-sunken: #0f1113;
     --fg: #e6e9e6;
     --fg-muted: #9aa3a0;
     --fg-faint: #7f8885;
-    --border: #232a2f;
+    --border: #2a2f35;
     --border-strong: #37414a;
     --grid: rgb(230 233 230 / 0.045);
-    --accent: #3fd1c3;
-    --accent-strong: #7ae3d8;
-    --accent-soft: #0f2a29;
-    --accent-fg: #06201e;
-    --focus: #3fd1c3;
-    --msc: #a99cff;
-    --msc-soft: #1f1b3d;
-    --msc-fg: #15122b;
-    --pg: #f2b45a;
-    --pg-soft: #2e2210;
-    --pg-fg: #241703;
+    --accent: #86b3b8;
+    --accent-strong: #a9cbcf;
+    --accent-soft: #1b2729;
+    --accent-fg: #0f1a1b;
+    --focus: #86b3b8;
+    --msc: #aea8d6;
+    --msc-soft: #22213a;
+    --msc-fg: #17162a;
+    --pg: #d4b07a;
+    --pg-soft: #2b2419;
+    --pg-fg: #21190d;
     --shadow: 0 1px 0 rgb(0 0 0 / 0.3), 0 12px 32px -18px rgb(0 0 0 / 0.7);
     color-scheme: dark;
   }
 }
 
 :root[data-theme='dark'] {
-  --bg: #0d1013;
-  --bg-elev: #13171b;
-  --bg-sunken: #0a0c0e;
+  --bg: #121417;
+  --bg-elev: #181b1f;
+  --bg-sunken: #0f1113;
   --fg: #e6e9e6;
   --fg-muted: #9aa3a0;
   --fg-faint: #7f8885;
-  --border: #232a2f;
+  --border: #2a2f35;
   --border-strong: #37414a;
   --grid: rgb(230 233 230 / 0.045);
-  --accent: #3fd1c3;
-  --accent-strong: #7ae3d8;
-  --accent-soft: #0f2a29;
-  --accent-fg: #06201e;
-  --focus: #3fd1c3;
-  --msc: #a99cff;
-  --msc-soft: #1f1b3d;
-  --msc-fg: #15122b;
-  --pg: #f2b45a;
-  --pg-soft: #2e2210;
-  --pg-fg: #241703;
+  --accent: #86b3b8;
+  --accent-strong: #a9cbcf;
+  --accent-soft: #1b2729;
+  --accent-fg: #0f1a1b;
+  --focus: #86b3b8;
+  --msc: #aea8d6;
+  --msc-soft: #22213a;
+  --msc-fg: #17162a;
+  --pg: #d4b07a;
+  --pg-soft: #2b2419;
+  --pg-fg: #21190d;
   --shadow: 0 1px 0 rgb(0 0 0 / 0.3), 0 12px 32px -18px rgb(0 0 0 / 0.7);
   color-scheme: dark;
 }
@@ -119,22 +119,6 @@ body {
   font-optical-sizing: auto;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
-}
-
-/* Faded engineering grid behind the top of every page. */
-body::before {
-  content: '';
-  position: absolute;
-  inset: 0 0 auto 0;
-  height: 560px;
-  z-index: -1;
-  pointer-events: none;
-  background-image:
-    linear-gradient(var(--grid) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
-  background-size: 28px 28px;
-  background-position: -1px -1px;
-  mask-image: linear-gradient(to bottom, #000 0%, transparent 100%);
 }
 
 [hidden] {
@@ -247,20 +231,8 @@ main {
   padding-block: clamp(40px, 8vw, 72px) 28px;
 }
 
-.page-head .path {
-  font-family: var(--font-mono);
-  font-size: 0.875rem;
-  color: var(--fg-muted);
-}
-
-.page-head .path b {
-  color: var(--accent);
-  font-weight: 500;
-}
-
 .page-head h1 {
-  margin-top: 6px;
-  font-size: clamp(2rem, 5vw, 2.75rem);
+  font-size: clamp(2rem, 5vw, 2.6rem);
   letter-spacing: -0.02em;
 }
 
@@ -273,18 +245,21 @@ main {
 .section-label {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-family: var(--font-mono);
+  gap: 12px;
+  font-family: var(--font-sans);
   font-size: 0.8125rem;
-  font-weight: 500;
-  letter-spacing: 0.02em;
+  font-weight: 600;
+  letter-spacing: 0.08em;
   color: var(--fg-muted);
-  text-transform: lowercase;
+  text-transform: uppercase;
 }
 
 .section-label::before {
-  content: '//';
-  color: var(--accent);
+  content: '';
+  width: 18px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--accent);
 }
 
 .section-label::after {

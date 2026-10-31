@@ -11,7 +11,6 @@ const locale = localeFromParam(Astro.params.lang);
 
 <BaseLayout locale={locale} title={`${t(locale, 'work.title')} · ${profile.name}`} description={t(locale, 'work.description')} active="work">
   <header class="container page-head">
-    <p class="path"><b>~/</b>{t(locale, 'nav.work')}</p>
     <h1>{t(locale, 'work.title')}</h1>
     <p class="lede">{t(locale, 'work.intro')}</p>
   </header>

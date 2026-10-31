@@ -1,7 +1,7 @@
 ---
 import Icon from './Icon.astro';
 import { localizePath, otherLocale, stripLocale, t, type Locale } from '../i18n/ui';
-import { publicFileExists } from '../lib/data';
+import { profile, publicFileExists } from '../lib/data';
 import type { NavKey } from '../lib/types';
 
 interface Props {
@@ -25,17 +25,17 @@ const hasCv = publicFileExists('cv.pdf');
 
 <header class="site-header">
   <div class="container bar">
-    <a class="brand mono" href={localizePath('/', locale)} aria-current={active === 'home' ? 'page' : undefined}>
-      <span class="brand-prompt" aria-hidden="true">~/</span>bdfsaraiva
+    <a class="brand" href={localizePath('/', locale)} aria-current={active === 'home' ? 'page' : undefined}>
+      {profile.name}
     </a>
 
-    <nav class="nav mono" aria-label={t(locale, 'nav.main')}>
+    <nav class="nav" aria-label={t(locale, 'nav.main')}>
       <ul>
         {
           nav.map((item) => (
             <li>
               <a href={localizePath(item.path, locale)} aria-current={active === item.key ? 'page' : undefined}>
-                <span class="tilde" aria-hidden="true">~/</span>{t(locale, `nav.${item.key}`)}
+                {t(locale, `nav.${item.key}`)}
               </a>
             </li>
           ))
@@ -46,7 +46,7 @@ const hasCv = publicFileExists('cv.pdf');
     <div class="actions">
       {
         hasCv && (
-          <a class="action cv mono" href="/cv.pdf" download>
+          <a class="action cv" href="/cv.pdf" download>
             <Icon name="file" size={16} />
             {t(locale, 'nav.cv')}
           </a>
@@ -105,14 +105,12 @@ const hasCv = publicFileExists('cv.pdf');
   .brand {
     grid-area: brand;
     font-weight: 600;
-    font-size: 0.9375rem;
+    font-size: 1rem;
     text-decoration: none;
     letter-spacing: -0.01em;
+    white-space: nowrap;
   }
 
-  .brand-prompt {
-    color: var(--accent);
-  }
 
   .nav {
     grid-area: nav;
@@ -134,16 +132,14 @@ const hasCv = publicFileExists('cv.pdf');
   .nav a {
     display: inline-block;
     padding: 10px 8px 11px;
-    font-size: 0.875rem;
+    font-size: 0.9375rem;
+    font-weight: 500;
     color: var(--fg-muted);
     text-decoration: none;
     white-space: nowrap;
     border-bottom: 2px solid transparent;
   }
 
-  .nav .tilde {
-    color: var(--fg-faint);
-  }
 
   .nav a:hover {
     color: var(--fg);
@@ -159,9 +155,6 @@ const hasCv = publicFileExists('cv.pdf');
     border-bottom-color: var(--accent);
   }
 
-  .nav a[aria-current='page'] .tilde {
-    color: var(--accent);
-  }
 
   .actions {
     grid-area: actions;

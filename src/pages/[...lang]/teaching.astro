@@ -23,7 +23,6 @@ function period(course: Course): string {
 
 <BaseLayout locale={locale} title={`${t(locale, 'teaching.title')} · ${profile.name}`} description={t(locale, 'teaching.description')} active="teaching">
   <header class="container page-head">
-    <p class="path"><b>~/</b>{t(locale, 'nav.teaching')}</p>
     <h1>{t(locale, 'teaching.title')}</h1>
     <p class="lede">{t(locale, 'teaching.intro')}</p>
   </header>
@@ -170,13 +169,11 @@ function period(course: Course): string {
 
   /* Group subtitle takes the level colour ("// Licenciaturas"). */
   .level-title {
-    font-size: 0.875rem;
     color: var(--fg);
-    text-transform: none;
   }
 
   .level-title::before {
-    color: var(--level);
+    background: var(--level);
   }
 
   .course-actions {

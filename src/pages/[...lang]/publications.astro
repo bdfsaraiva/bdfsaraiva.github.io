@@ -21,7 +21,6 @@ const hasItems = publications.items.length > 0;
 
 <BaseLayout locale={locale} title={`${t(locale, 'pubs.title')} · ${profile.name}`} description={t(locale, 'pubs.description')} active="publications">
   <header class="container page-head">
-    <p class="path"><b>~/</b>{t(locale, 'nav.publications')}</p>
     <h1>{t(locale, 'pubs.title')}</h1>
     <p class="lede">
       {splitTemplate(locale, 'pubs.intro').map((part) => (part === '{source}' ? <a href="https://openalex.org">OpenAlex</a> : part))}
