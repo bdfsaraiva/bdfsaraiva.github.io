@@ -35,16 +35,30 @@ bio:
       da Universidade Lusófona, onde leciono programação e aprendizagem automática. Sou também doutorando
       em Informática.
   - en: >-
-      My research combines Natural Language Processing (NLP) with the study of how participants coordinate in
-      conversation. I develop open-source tools for analysing multi-party conversations, such as ParShift
-      and LACE, and study how Large Language Models (LLMs) generate scientific code. In the European project
-      CresCine, I work with audience and film-industry data.
+      My research focuses on the relationship between interactions and collective phenomena in complex
+      networks, combining Natural Language Processing (NLP) with the study of how participants coordinate
+      in conversation. I develop open-source tools for analysing multi-party conversations, such as
+      ParShift and LACE.
     pt: >-
-      A minha investigação combina Natural Language Processing (NLP) com o estudo da coordenação entre
-      participantes em conversa. Desenvolvo ferramentas open source para a análise de conversas com
-      múltiplos participantes, como o ParShift e o LACE, e estudo a forma como os Large Language Models
-      (LLMs) geram código científico. No projeto europeu CresCine, trabalho com dados de audiências e
-      da indústria cinematográfica.
+      A minha investigação centra-se na relação entre interações e fenómenos coletivos em redes complexas,
+      combinando Natural Language Processing (NLP) com o estudo da coordenação entre participantes em
+      conversa. Desenvolvo ferramentas open source para a análise de conversas com múltiplos participantes,
+      como o ParShift e o LACE.
+  - en: >-
+      As a research assistant in a project funded by the Portuguese Foundation for Science and Technology
+      (FCT), in collaboration with the Ministry of Education, I collected and analysed data from online
+      group debates to inform educational interventions that promote critical thinking, argumentation and
+      attention to multiple perspectives. I am currently part of a lab working on the EU-funded project
+      CresCine, which aims to turn audience data from the film industry into predictive and explanatory
+      insights that support film production in small European countries.
+    pt: >-
+      Como assistente de investigação num projeto financiado pela Fundação para a Ciência e a Tecnologia
+      (FCT), em colaboração com o Ministério da Educação, recolhi e analisei dados de debates online em
+      grupo, com o objetivo de informar intervenções educativas que promovam o pensamento crítico, a
+      argumentação e a consideração de múltiplas perspetivas. Integro atualmente um laboratório que trabalha
+      no projeto europeu CresCine, cujo objetivo é transformar dados de audiências da indústria
+      cinematográfica em conhecimento preditivo e explicativo de apoio à produção de cinema em pequenos
+      países europeus.
 
 interests:
   # Technical terms such as NLP and LLMs stay in English in both languages.
