@@ -1,0 +1,18 @@
+# Degree programmes referred to by acronym in courses.yaml (Universidade Lusófona).
+# Names only: the Teaching page section already says the level (Licenciaturas / Bachelor's degrees).
+
+LEI:
+  en: Computer Engineering
+  pt: Engenharia Informática
+LIG:
+  en: Management Information Systems
+  pt: Informática de Gestão
+LEIRT:
+  en: Computer Engineering, Networks and Telecommunications
+  pt: Engenharia Informática, Redes e Telecomunicações
+LCID:
+  en: Data Science
+  pt: Ciência de Dados
+LCMA:
+  en: Applied Mathematics and Computing
+  pt: Computação e Matemática Aplicada

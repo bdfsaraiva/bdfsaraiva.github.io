@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { langStaticPaths, localeFromParam, localized, t } from '../../i18n/ui';
-import { courses, isCurrentCourse, profile } from '../../lib/data';
+import { courses, isCurrentCourse, profile, programmes } from '../../lib/data';
 import type { Course, CourseLevel } from '../../lib/types';
 
 export const getStaticPaths = langStaticPaths;
@@ -10,9 +10,12 @@ const locale = localeFromParam(Astro.params.lang);
 
 // One section per degree level; `courses` is already sorted, so each section keeps that order.
 const LEVELS: CourseLevel[] = ['bsc', 'msc', 'postgrad'];
-const sections = LEVELS.map((level) => ({ level, items: courses.filter((course) => course.level === level) })).filter(
-  (section) => section.items.length > 0,
-);
+const sections = LEVELS.map((level) => {
+  const items = courses.filter((course) => course.level === level);
+  // Acronyms used in this section that have a known full name, in order of first appearance.
+  const acronyms = [...new Set(items.flatMap((course) => course.programmes ?? []))].filter((code) => programmes[code]);
+  return { level, items, acronyms };
+}).filter((section) => section.items.length > 0);
 
 /** "2019 – present", "2019 – 2023" or just "2023" for a single year. */
 function period(course: Course): string {
@@ -33,6 +36,13 @@ function period(course: Course): string {
         <h2 class="section-label level-title" id={`level-${section.level}`}>
           {t(locale, `teaching.level.${section.level}`)}
         </h2>
+        {section.acronyms.length > 0 && (
+          <p class="legend">
+            {section.acronyms.map((code, i) => (
+              <span>{i > 0 && ' · '}<b>{code}</b> {localized(programmes[code], locale)}</span>
+            ))}
+          </p>
+        )}
         <ul class="card-grid courses">
           {section.items.map((course, i) => {
             const current = isCurrentCourse(course);
@@ -46,7 +56,9 @@ function period(course: Course): string {
                 {course.programmes && course.programmes.length > 0 && (
                   <ul class="programmes" aria-label={t(locale, 'teaching.programmes')}>
                     {course.programmes.map((programme) => (
-                      <li class="chip">{programme}</li>
+                      <li class="chip">
+                        {programmes[programme] ? <abbr title={localized(programmes[programme], locale)}>{programme}</abbr> : programme}
+                      </li>
                     ))}
                   </ul>
                 )}
@@ -170,6 +182,24 @@ function period(course: Course): string {
   /* Group subtitle takes the level colour ("// Licenciaturas"). */
   .level-title {
     color: var(--fg);
+  }
+
+  /* One-line key for the programme acronyms used in the section. */
+  .legend {
+    margin-top: -8px;
+    font-size: 0.8125rem;
+    line-height: 1.7;
+    color: var(--fg-muted);
+  }
+
+  .legend b {
+    font-weight: 600;
+    color: var(--fg);
+  }
+
+  .programmes abbr {
+    text-decoration: none;
+    cursor: help;
   }
 
   .level-title::before {

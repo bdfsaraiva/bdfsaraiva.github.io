@@ -6,6 +6,8 @@ import profileRaw from '../data/profile.yaml?raw';
 import projectsRaw from '../data/projects.yaml?raw';
 import coursesRaw from '../data/courses.yaml?raw';
 import hobbiesRaw from '../data/hobbies.yaml?raw';
+import programmesRaw from '../data/programmes.yaml?raw';
+import type { Localized } from '../i18n/ui';
 import publicationsJson from '../data/generated/publications.json';
 import githubJson from '../data/generated/github.json';
 import stravaJson from '../data/generated/strava.json';
@@ -43,6 +45,9 @@ export const strava = stravaJson as StravaData;
 
 /** A course without an end year is still being taught. */
 export const isCurrentCourse = (course: Course) => course.to == null;
+
+/** Full names of degree programmes, keyed by acronym (LEI, LCID…). */
+export const programmes = ((parse(programmesRaw) as Record<string, Localized> | null) ?? {});
 
 /** Courses in the order written in courses.yaml (the order is chosen by hand). */
 export const courses = (parse(coursesRaw) as Course[] | null) ?? [];
