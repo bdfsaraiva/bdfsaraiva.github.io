@@ -13,16 +13,16 @@ const year = stats?.year ?? new Date().getFullYear();
 
 const primary = stats
   ? [
-      { value: stats.ytd.distanceKm, label: t(locale, 'hobbies.stat.ytdKm', { year }) },
-      { value: stats.ytd.elevationM, label: t(locale, 'hobbies.stat.ytdElev', { year }) },
-      { value: stats.ytd.count, label: t(locale, stats.ytd.count === 1 ? 'hobbies.stat.ytdRides.one' : 'hobbies.stat.ytdRides.other', { year }) },
+      { value: stats.ytd.distanceKm, unit: 'km', label: t(locale, 'hobbies.stat.ytdKm', { year }) },
+      { value: stats.ytd.elevationM, unit: 'm', label: t(locale, 'hobbies.stat.ytdElev', { year }) },
+      { value: stats.ytd.count, unit: '', label: t(locale, stats.ytd.count === 1 ? 'hobbies.stat.ytdRides.one' : 'hobbies.stat.ytdRides.other', { year }) },
     ]
   : [];
 const secondary = stats
   ? [
-      { value: stats.all.distanceKm, label: t(locale, 'hobbies.stat.allKm') },
-      { value: stats.longestRideKm, label: t(locale, 'hobbies.stat.longest') },
-      { value: stats.biggestClimbM, label: t(locale, 'hobbies.stat.climb') },
+      { value: stats.all.distanceKm, unit: 'km', label: t(locale, 'hobbies.stat.allKm') },
+      { value: stats.longestRideKm, unit: 'km', label: t(locale, 'hobbies.stat.longest') },
+      { value: stats.biggestClimbM, unit: 'm', label: t(locale, 'hobbies.stat.climb') },
     ]
   : [];
 
@@ -149,11 +149,12 @@ const padelPhoto = publicFileExists(padel.photo) ? padel.photo : undefined;
           <ul class="stats primary">
             {primary.map((stat) => (
               <li>
-                <span class="value" data-count={stat.value} aria-hidden="true">
-                  {number.format(stat.value)}
+                <span class="figure" aria-hidden="true">
+                  <span class="value" data-count={stat.value}>{number.format(stat.value)}</span>
+                  {stat.unit && <span class="unit">{stat.unit}</span>}
                 </span>
                 <span class="label">
-                  <span class="hb-sr">{number.format(stat.value)} </span>
+                  <span class="hb-sr">{`${number.format(stat.value)} ${stat.unit} `}</span>
                   {stat.label}
                 </span>
               </li>
@@ -162,11 +163,12 @@ const padelPhoto = publicFileExists(padel.photo) ? padel.photo : undefined;
           <ul class="stats secondary">
             {secondary.map((stat) => (
               <li>
-                <span class="value" data-count={stat.value} aria-hidden="true">
-                  {number.format(stat.value)}
+                <span class="figure" aria-hidden="true">
+                  <span class="value" data-count={stat.value}>{number.format(stat.value)}</span>
+                  {stat.unit && <span class="unit">{stat.unit}</span>}
                 </span>
                 <span class="label">
-                  <span class="hb-sr">{number.format(stat.value)} </span>
+                  <span class="hb-sr">{`${number.format(stat.value)} ${stat.unit} `}</span>
                   {stat.label}
                 </span>
               </li>
@@ -602,8 +604,32 @@ const padelPhoto = publicFileExists(padel.photo) ? padel.photo : undefined;
   .stats li {
     display: grid;
     gap: 4px;
+    min-width: 0;
     padding-top: 14px;
     border-top: 1px solid var(--hb-line);
+  }
+
+  /* Number and unit on one baseline: "1714 km". */
+  .figure {
+    display: flex;
+    align-items: baseline;
+    gap: 0.18em;
+  }
+
+  .unit {
+    font-family: var(--hb-display);
+    font-weight: 600;
+    font-size: 0.42em;
+    letter-spacing: 0.02em;
+    color: var(--hb-muted);
+  }
+
+  .primary .figure {
+    font-size: clamp(2.5rem, 11vw, 7.5rem);
+  }
+
+  .secondary .figure {
+    font-size: clamp(2.2rem, 6vw, 3.6rem);
   }
 
   .value {
@@ -614,12 +640,7 @@ const padelPhoto = publicFileExists(padel.photo) ? padel.photo : undefined;
   }
 
   .primary .value {
-    font-size: clamp(3.6rem, 11vw, 7.5rem);
     color: var(--hb-lime);
-  }
-
-  .secondary .value {
-    font-size: clamp(2.2rem, 6vw, 3.6rem);
   }
 
   .label {
