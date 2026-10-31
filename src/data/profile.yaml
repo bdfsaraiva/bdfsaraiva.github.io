@@ -1,0 +1,61 @@
+# Home page content. Text fields accept a plain string or { en: …, pt: … }.
+
+name: Bruno D. Ferreira-Saraiva
+
+role:
+  en: Assistant Professor
+  pt: Professor Assistente
+
+affiliation:
+  en: DEISI · Universidade Lusófona, Lisbon
+  pt: DEISI · Universidade Lusófona, Lisboa
+
+# Put the photo in public/images/profile.jpg (square, ≥ 400 px). Until then a monogram is shown.
+photo: /images/profile.jpg
+
+# Shown on the page as a mailto link assembled in the browser (keeps the address away from scrapers).
+email:
+  user: bruno.saraiva
+  domain: ulusofona.pt
+
+links:
+  scholar: https://scholar.google.com/citations?user=7NXpcZcAAAAJ
+  orcid: https://orcid.org/0000-0001-8839-7222
+  github: https://github.com/bdfsaraiva
+  linkedin: https://www.linkedin.com/in/bdsaraiva/
+  institutional: https://research.ulusofona.pt/en/persons/8a5bae9d-68ca-4aca-8f39-dca872504466
+
+bio:
+  - en: >-
+      I am an Assistant Professor in the Department of Computer Engineering and Information Systems
+      (DEISI) at Universidade Lusófona, where I teach programming and machine learning. I am also a PhD
+      candidate in Informatics.
+    pt: >-
+      Sou Professor Assistente no Departamento de Engenharia Informática e Sistemas de Informação (DEISI)
+      da Universidade Lusófona, onde leciono programação e aprendizagem automática. Sou também doutorando
+      em Informática.
+  - en: >-
+      My research combines natural language processing with the study of how participants coordinate in
+      conversation. I develop open-source tools for analysing multi-party conversations, such as ParShift
+      and LACE, and study how large language models generate scientific code. In the European project
+      CresCine, I work with audience and film-industry data.
+    pt: >-
+      A minha investigação combina o processamento de linguagem natural com o estudo da coordenação entre
+      participantes em conversa. Desenvolvo ferramentas open source para a análise de conversas com
+      múltiplos participantes, como o ParShift e o LACE, e estudo a forma como os grandes modelos de
+      linguagem geram código científico. No projeto europeu CresCine, trabalho com dados de audiências e
+      da indústria cinematográfica.
+
+interests:
+  - en: Natural language processing
+    pt: Processamento de linguagem natural
+  - en: Conversation analysis
+    pt: Análise de conversação
+  - en: Large language models
+    pt: Grandes modelos de linguagem
+  - en: Computational social science
+    pt: Ciências sociais computacionais
+  - en: Data science
+    pt: Ciência de dados
+  - en: Data visualisation
+    pt: Visualização de dados

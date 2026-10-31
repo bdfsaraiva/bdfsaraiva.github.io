@@ -1,0 +1,93 @@
+# Work page. `repo` (owner/name) pulls stars, language and last update from GitHub automatically.
+
+software:
+  - id: parshift
+    name: ParShift
+    repo: bdfsaraiva/parshift
+    tagline:
+      en: Participation shifts in group conversations
+      pt: Mudanças de participação em conversas de grupo
+    description:
+      en: >-
+        Python package that implements Gibson's participation-shift framework for studying who speaks, who
+        is addressed and who responds in multi-party conversations.
+      pt: >-
+        Pacote Python que implementa o modelo de participation shifts de Gibson para estudar quem fala, a
+        quem se dirige e quem responde em conversas com múltiplos participantes.
+    tags: [Python, NLP, conversation analysis]
+    links:
+      - { label: Docs, url: 'https://bdfsaraiva.github.io/parshift/' }
+      - { label: PyPI, url: 'https://pypi.org/project/parshift/' }
+      - { label: { en: Paper, pt: Artigo }, url: 'https://doi.org/10.1016/j.softx.2023.101554' }
+
+  - id: lace
+    name: LACE
+    repo: bdfsaraiva/LACE
+    tagline:
+      en: Labelling Adjacency and Conversation Entanglement
+      pt: Anotação de pares adjacentes e entrelaçamento de conversas
+    description:
+      en: >-
+        Full-stack annotation tool for chat disentanglement and adjacency pairs, with multi-annotator
+        projects and built-in inter-annotator agreement analysis.
+      pt: >-
+        Ferramenta de anotação full-stack para a separação de conversas entrelaçadas e a marcação de pares
+        adjacentes, com suporte a projetos com vários anotadores e análise da concordância entre eles.
+    tags: [Python, annotation, inter-annotator agreement]
+
+projects:
+  - id: crescine
+    name: CresCine
+    fullName:
+      en: Increasing the international competitiveness of the film industry in small European markets
+      pt: Aumentar a competitividade internacional da indústria do cinema em pequenos mercados europeus
+    role:
+      en: Researcher · audience modelling (WP7)
+      pt: Investigador · modelação de audiências (WP7)
+    period: 2023–2026
+    funder:
+      en: European Union
+      pt: União Europeia
+    description:
+      en: >-
+        European consortium dedicated to the film industry in small markets. I contribute to FIDA, the
+        project's film-industry data repository, and to CineFlux, an interpretable dashboard that models
+        audience reception along moral and motivational dimensions from reviews annotated with LLMs.
+      pt: >-
+        Consórcio europeu dedicado à indústria cinematográfica em pequenos mercados. Contribuo para o FIDA,
+        o repositório de dados da indústria cinematográfica do projeto, e para o CineFlux, um dashboard
+        interpretável que modela a receção das audiências em dimensões morais e motivacionais a partir de
+        críticas anotadas com LLMs.
+    links:
+      - { label: FIDA, url: 'https://doi.org/10.5281/zenodo.17829235' }
+      - { label: CineFlux MVP, url: 'https://doi.org/10.5281/zenodo.19630573' }
+      - { label: { en: CineFlux walkthrough, pt: Guia do CineFlux }, url: 'https://doi.org/10.5281/zenodo.19181728' }
+      - { label: { en: Workshops, pt: Workshops }, url: 'https://doi.org/10.5281/zenodo.18799561' }
+
+  - id: debaqi
+    name: Debaqi
+    fullName:
+      en: Factors for the promotion of dialogue and healthy behaviours in online school communities
+      pt: Fatores para a promoção do diálogo e de comportamentos saudáveis em comunidades escolares online
+    role:
+      en: Researcher
+      pt: Investigador
+    period: 2021–2023
+    funder: FCT
+    description:
+      en: >-
+        Research on how students coordinate in online debates. This work gave rise to ParShift, to the
+        QiBERT classifier for online conversations and to the study of explicit replies as coordination
+        mechanisms.
+      pt: >-
+        Investigação sobre a forma como os alunos se coordenam em debates online. Este trabalho deu origem ao
+        ParShift, ao classificador QiBERT para conversas online e ao estudo das respostas explícitas como
+        mecanismos de coordenação.
+
+# Academic service: committees, reviewing, volunteering. Sorted by year automatically.
+service:
+  - year: 2023
+    role: { en: Volunteer, pt: Voluntário }
+    event: 12th International Conference on Complex Networks and their Applications (Complex Networks 2023)
+    place: { en: 'Menton, France', pt: 'Menton, França' }
+    url: https://2023.complexnetworks.org/committees/

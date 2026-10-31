@@ -1,0 +1,345 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import { langStaticPaths, localeFromParam, localizePath, localized, t } from '../../i18n/ui';
+import { courses, hobbies, profile, projects, publications, publicFileExists } from '../../lib/data';
+
+export const getStaticPaths = langStaticPaths;
+
+const locale = localeFromParam(Astro.params.lang);
+const hasPhoto = publicFileExists(profile.photo);
+// First name + last surname: "Bruno D. Ferreira-Saraiva" -> "BS".
+const nameParts = profile.name.split(/[\s-]+/);
+const initials = `${nameParts[0]?.[0] ?? ''}${nameParts.at(-1)?.[0] ?? ''}`;
+
+const linkButtons = [
+  { key: 'scholar', label: 'Google Scholar', icon: 'scholar', url: profile.links.scholar },
+  { key: 'orcid', label: 'ORCID', icon: 'orcid', url: profile.links.orcid },
+  { key: 'github', label: 'GitHub', icon: 'github', url: profile.links.github },
+  { key: 'linkedin', label: 'LinkedIn', icon: 'linkedin', url: profile.links.linkedin },
+  { key: 'institutional', label: 'Lusófona', icon: 'building', url: profile.links.institutional },
+] as const;
+
+const sports = (['football', 'cycling', 'padel'] as const).filter((key) => hobbies[key]).length;
+const listing = [
+  { path: '/publications/', name: 'publications/', count: publications.items.length },
+  { path: '/work/', name: 'work/', count: projects.software.length + projects.projects.length },
+  { path: '/teaching/', name: 'teaching/', count: courses.length },
+  { path: '/hobbies/', name: 'hobbies/', count: sports },
+];
+---
+
+<BaseLayout locale={locale} title={`${profile.name} — ${localized(profile.role, locale)}`} active="home">
+  <section class="container hero">
+    <div class="intro">
+      <p class="prompt mono reveal" style="--i: 0"><span aria-hidden="true">$</span> {t(locale, 'home.whoami')}</p>
+      <h1 class="name reveal" style="--i: 1">
+        {profile.name}<span class="cursor" aria-hidden="true">_</span>
+      </h1>
+      <p class="role mono reveal" style="--i: 2">
+        <span>{localized(profile.role, locale)}</span>
+        <span class="sep" aria-hidden="true">@</span>
+        <span>{localized(profile.affiliation, locale)}</span>
+      </p>
+
+      <div class="bio reveal" style="--i: 3">
+        {profile.bio.map((paragraph) => <p>{localized(paragraph, locale)}</p>)}
+      </div>
+
+      <ul class="links reveal" style="--i: 4" aria-label={t(locale, 'home.links')}>
+        {
+          linkButtons
+            .filter((link) => link.url)
+            .map((link) => (
+              <li>
+                <a class="link-btn" href={link.url} rel="me noopener">
+                  <Icon name={link.icon} size={16} />
+                  <span>{link.label}</span>
+                </a>
+              </li>
+            ))
+        }
+        {
+          profile.email && (
+            <li>
+              <a
+                class="link-btn"
+                href="#"
+                data-mail-user={profile.email.user}
+                data-mail-domain={profile.email.domain}
+              >
+                <Icon name="mail" size={16} />
+                <span>Email</span>
+              </a>
+            </li>
+          )
+        }
+      </ul>
+      {
+        profile.email && (
+          <noscript>
+            <p class="noscript-email mono">
+              {profile.email.user} [at] {profile.email.domain}
+            </p>
+          </noscript>
+        )
+      }
+    </div>
+
+    <figure class="portrait reveal" style="--i: 2">
+      {
+        hasPhoto ? (
+          <img src={profile.photo} alt={t(locale, 'home.photoAlt', { name: profile.name })} width="320" height="320" />
+        ) : (
+          <div class="monogram mono" aria-hidden="true">
+            {initials}
+          </div>
+        )
+      }
+      <figcaption class="mono">fig. 1 — bdfsaraiva</figcaption>
+    </figure>
+  </section>
+
+  <section class="container block" aria-labelledby="interests-title">
+    <h2 class="section-label" id="interests-title">{t(locale, 'home.interests')}</h2>
+    <ul class="interests">
+      {profile.interests.map((interest) => <li class="chip">{localized(interest, locale)}</li>)}
+    </ul>
+  </section>
+
+  <section class="container block" aria-label={t(locale, 'home.index')}>
+    <div class="terminal mono">
+      <p class="prompt"><span aria-hidden="true">$</span> ls -l ~/</p>
+      <ul>
+        {
+          listing.map((entry) => (
+            <li>
+              <span class="perm" aria-hidden="true">drwxr-xr-x</span>
+              <span class="count">{entry.count}</span>
+              <a href={localizePath(entry.path, locale)}>{entry.name}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  for (const link of document.querySelectorAll<HTMLAnchorElement>('[data-mail-user]')) {
+    link.href = `mailto:${link.dataset.mailUser}@${link.dataset.mailDomain}`;
+  }
+</script>
+
+<style>
+  .hero {
+    display: grid;
+    gap: 36px;
+    padding-block: clamp(40px, 9vw, 96px) 40px;
+  }
+
+  .prompt {
+    font-size: 0.875rem;
+    color: var(--fg-muted);
+  }
+
+  .prompt span {
+    color: var(--accent);
+  }
+
+  .name {
+    margin-top: 8px;
+    font-size: clamp(2.1rem, 6vw, 3.5rem);
+    font-weight: 650;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+  }
+
+  .cursor {
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-weight: 400;
+    margin-left: 0.05em;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .cursor {
+      animation: blink 1.1s steps(1) infinite;
+    }
+  }
+
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+
+  .role {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px 8px;
+    margin-top: 14px;
+    font-size: 0.9375rem;
+    color: var(--fg-muted);
+  }
+
+  .role .sep {
+    color: var(--accent);
+  }
+
+  .bio {
+    display: grid;
+    gap: 14px;
+    max-width: 64ch;
+    margin-top: 24px;
+    font-size: 1.0625rem;
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 28px;
+  }
+
+  .link-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 13px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--bg-elev);
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--fg);
+    text-decoration: none;
+    transition: border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+  }
+
+  .link-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-1px);
+  }
+
+  .noscript-email {
+    margin-top: 10px;
+    font-size: 0.8125rem;
+    color: var(--fg-muted);
+  }
+
+  .portrait {
+    margin: 0;
+    justify-self: start;
+    width: min(100%, 260px);
+  }
+
+  .portrait img,
+  .monogram {
+    width: 100%;
+    aspect-ratio: 1;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    object-fit: cover;
+    box-shadow: 8px 8px 0 -1px var(--accent-soft), 8px 8px 0 0 var(--border-strong);
+  }
+
+  .monogram {
+    display: grid;
+    place-items: center;
+    background:
+      repeating-linear-gradient(135deg, transparent 0 10px, var(--grid) 10px 11px),
+      var(--bg-elev);
+    font-size: clamp(3.5rem, 12vw, 5.5rem);
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    color: var(--accent);
+  }
+
+  figcaption {
+    margin-top: 14px;
+    font-size: 0.75rem;
+    color: var(--fg-faint);
+  }
+
+  .block {
+    padding-bottom: 44px;
+  }
+
+  .interests {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 18px;
+  }
+
+  .interests .chip {
+    font-size: 0.875rem;
+    color: var(--fg);
+  }
+
+  .terminal {
+    max-width: 520px;
+    padding: 18px 20px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-sunken);
+    font-size: 0.875rem;
+  }
+
+  .terminal ul {
+    margin-top: 8px;
+    display: grid;
+    gap: 2px;
+  }
+
+  .terminal li {
+    display: grid;
+    grid-template-columns: auto 3ch 1fr;
+    gap: 14px;
+  }
+
+  .terminal .perm {
+    color: var(--fg-faint);
+  }
+
+  .terminal .count {
+    text-align: right;
+    color: var(--fg-muted);
+  }
+
+  .terminal a {
+    color: var(--accent);
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .terminal a:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 420px) {
+    .terminal .perm {
+      display: none;
+    }
+
+    .terminal li {
+      grid-template-columns: 3ch 1fr;
+    }
+  }
+
+  @media (min-width: 860px) {
+    .hero {
+      grid-template-columns: 1fr 280px;
+      align-items: start;
+      gap: 64px;
+    }
+
+    .portrait {
+      justify-self: end;
+      margin-top: 36px;
+    }
+  }
+</style>

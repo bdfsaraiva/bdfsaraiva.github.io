@@ -1,0 +1,98 @@
+name: Build and deploy
+
+on:
+  # Content edits: build and deploy with the data already in the repository.
+  push:
+    branches: [main]
+  # Every Monday at 06:00 UTC: refresh publications (OpenAlex), GitHub stats and Strava stats.
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+# Nothing by default; each job asks only for what it needs.
+permissions: {}
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write # only used by the "Commit refreshed data" step
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Keep the token out of .git/config so npm scripts and the build cannot push.
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      # Data is refreshed on schedule / manual runs only, so pushes never race with bot commits.
+      # Each script keeps the cached JSON when its API fails, and continue-on-error is a second safety net.
+      - name: Refresh publications (OpenAlex)
+        if: github.event_name != 'push'
+        continue-on-error: true
+        run: npm run fetch:pubs
+        env:
+          OPENALEX_MAILTO: ${{ vars.OPENALEX_MAILTO }}
+          OPENALEX_API_KEY: ${{ secrets.OPENALEX_API_KEY }}
+
+      - name: Refresh GitHub stats
+        if: github.event_name != 'push'
+        continue-on-error: true
+        run: npm run fetch:github
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Refresh Strava stats
+        if: github.event_name != 'push'
+        continue-on-error: true
+        run: npm run fetch:strava
+        env:
+          STRAVA_CLIENT_ID: ${{ secrets.STRAVA_CLIENT_ID }}
+          STRAVA_CLIENT_SECRET: ${{ secrets.STRAVA_CLIENT_SECRET }}
+          STRAVA_REFRESH_TOKEN: ${{ secrets.STRAVA_REFRESH_TOKEN }}
+
+      - name: Commit refreshed data
+        if: github.event_name != 'push'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ -n "$(git status --porcelain src/data/generated)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add src/data/generated
+            git commit -m "chore(data): refresh generated data"
+            git push "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "HEAD:${GITHUB_REF_NAME}" \
+              || echo "::warning::Could not push refreshed data; the site is still deployed with it."
+          fi
+
+      - run: npm run check
+
+      - run: npm run build
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

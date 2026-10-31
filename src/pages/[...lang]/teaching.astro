@@ -1,0 +1,199 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { langStaticPaths, localeFromParam, localized, t } from '../../i18n/ui';
+import { courses, isCurrentCourse, profile } from '../../lib/data';
+import type { Course, CourseLevel } from '../../lib/types';
+
+export const getStaticPaths = langStaticPaths;
+
+const locale = localeFromParam(Astro.params.lang);
+
+// One section per degree level; `courses` is already sorted, so each section keeps that order.
+const LEVELS: CourseLevel[] = ['bsc', 'msc', 'postgrad'];
+const sections = LEVELS.map((level) => ({ level, items: courses.filter((course) => course.level === level) })).filter(
+  (section) => section.items.length > 0,
+);
+
+/** "2019 – present", "2019 – 2023" or just "2023" for a single year. */
+function period(course: Course): string {
+  if (course.to == null) return `${course.from} – ${t(locale, 'teaching.present')}`;
+  return course.to === course.from ? String(course.from) : `${course.from} – ${course.to}`;
+}
+---
+
+<BaseLayout locale={locale} title={`${t(locale, 'teaching.title')} · ${profile.name}`} description={t(locale, 'teaching.description')} active="teaching">
+  <header class="container page-head">
+    <p class="path"><b>~/</b>{t(locale, 'nav.teaching')}</p>
+    <h1>{t(locale, 'teaching.title')}</h1>
+    <p class="lede">{t(locale, 'teaching.intro')}</p>
+  </header>
+
+  {
+    sections.map((section) => (
+      <section class={`container stack-section level-${section.level}`} aria-labelledby={`level-${section.level}`}>
+        {/* The level is shown by colour; the heading is kept for screen readers only. */}
+        <h2 class="visually-hidden" id={`level-${section.level}`}>
+          {t(locale, `teaching.level.${section.level}`)}
+        </h2>
+        <ul class="card-grid courses">
+          {section.items.map((course, i) => {
+            const current = isCurrentCourse(course);
+            return (
+              <li class:list={['card', 'course', 'reveal', { current }]} style={`--i: ${i}`}>
+                <header class="course-head">
+                  <p class="institution mono">{course.institution}</p>
+                  {current && <span class="badge mono">{t(locale, 'teaching.current')}</span>}
+                </header>
+                <h3>{localized(course.name, locale)}</h3>
+                {course.programmes && course.programmes.length > 0 && (
+                  <ul class="programmes" aria-label={t(locale, 'teaching.programmes')}>
+                    {course.programmes.map((programme) => (
+                      <li class="chip">{programme}</li>
+                    ))}
+                  </ul>
+                )}
+                <dl class="facts mono">
+                  <div>
+                    <dt>{t(locale, 'teaching.years')}</dt>
+                    <dd>{period(course)}</dd>
+                  </div>
+                  {course.role && (
+                    <div>
+                      <dt>{t(locale, 'teaching.role')}</dt>
+                      <dd>{localized(course.role, locale)}</dd>
+                    </div>
+                  )}
+                </dl>
+                {course.links && course.links.length > 0 && (
+                  <div class="bracket-links course-links">
+                    {course.links.map((link) => (
+                      <a href={link.url}>{localized(link.label, locale)}</a>
+                    ))}
+                  </div>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      </section>
+    ))
+  }
+</BaseLayout>
+
+<style>
+  /* Each degree level has its own colour: BSc the site accent, MSc violet, postgraduate amber. */
+  .level-bsc {
+    --level: var(--accent);
+    --level-soft: var(--accent-soft);
+    --level-fg: var(--accent-fg);
+  }
+
+  .level-msc {
+    --level: var(--msc);
+    --level-soft: var(--msc-soft);
+    --level-fg: var(--msc-fg);
+  }
+
+  .level-postgrad {
+    --level: var(--pg);
+    --level-soft: var(--pg-soft);
+    --level-fg: var(--pg-fg);
+  }
+
+  /* Every card carries its level colour on the left edge. */
+  .course::before {
+    content: '';
+    position: absolute;
+    inset: 14px auto 14px -1px;
+    width: 3px;
+    border-radius: 0 3px 3px 0;
+    background: var(--level);
+  }
+
+  .course-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .institution {
+    font-size: 0.75rem;
+    color: var(--fg-muted);
+  }
+
+  .course h3 {
+    font-size: 1.1875rem;
+  }
+
+  .programmes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .programmes .chip {
+    padding: 1px 8px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--fg);
+  }
+
+  .facts {
+    display: grid;
+    gap: 4px;
+    margin: 0;
+    font-size: 0.8125rem;
+  }
+
+  .facts div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 8px;
+  }
+
+  .facts dt {
+    color: var(--fg-faint);
+  }
+
+  .facts dt::after {
+    content: ':';
+  }
+
+  .facts dd {
+    margin: 0;
+  }
+
+  .course-links {
+    margin-top: auto;
+    padding-top: 4px;
+  }
+
+  /* Courses currently taught: frame and tinted background in the level colour, plus a "Current" badge. */
+  .current {
+    border-color: color-mix(in srgb, var(--level) 55%, var(--border));
+    background: linear-gradient(180deg, var(--level-soft), var(--bg-elev) 70%);
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 2px 9px;
+    border-radius: 999px;
+    background: var(--level);
+    color: var(--level-fg);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .badge::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+</style>

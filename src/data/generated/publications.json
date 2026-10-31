@@ -1,0 +1,340 @@
+{
+  "updatedAt": "2026-10-30T23:58:21.826Z",
+  "items": [
+    {
+      "id": "W7154743419",
+      "title": "Deliverable D7.1 Personas dashboard: CineFlux MVP",
+      "year": 2026,
+      "date": "2026-04-17",
+      "type": "report",
+      "venue": "Zenodo",
+      "authors": [
+        {
+          "name": "Manuel Marques-Pita",
+          "me": false
+        },
+        {
+          "name": "Mauricio J. D. Martins",
+          "me": false
+        },
+        {
+          "name": "Bruno Saraiva",
+          "me": true
+        },
+        {
+          "name": "Zuil Pirola",
+          "me": false
+        }
+      ],
+      "doi": "10.5281/zenodo.19630573",
+      "links": {
+        "doi": "https://doi.org/10.5281/zenodo.19630573"
+      },
+      "citations": 0,
+      "bibtex": "@article{pita2026deliverable,\n  doi = {10.5281/ZENODO.19630573},\n  url = {https://zenodo.org/doi/10.5281/zenodo.19630573},\n  author = {Marques Pita, Manuel and Martins, Mauricio and Saraiva, Bruno and Pirola, Zuil},\n  title = {Deliverable D7.1 Personas dashboard: CineFlux MVP},\n  publisher = {Zenodo},\n  year = {2026},\n  copyright = {Creative Commons Attribution 4.0 International}\n}"
+    },
+    {
+      "id": "W7140099938",
+      "title": "Cineflux model and dashboard specification walkthrough",
+      "year": 2026,
+      "date": "2026-03-23",
+      "type": "report",
+      "venue": "Zenodo",
+      "authors": [
+        {
+          "name": "Manuel Marques-Pita",
+          "me": false
+        },
+        {
+          "name": "Mauricio J. D. Martins",
+          "me": false
+        },
+        {
+          "name": "Bruno Saraiva",
+          "me": true
+        },
+        {
+          "name": "Zuil Pirola",
+          "me": false
+        }
+      ],
+      "doi": "10.5281/zenodo.19181728",
+      "links": {
+        "doi": "https://doi.org/10.5281/zenodo.19181728"
+      },
+      "citations": 0,
+      "abstract": "Reception research needs going beyond ratings and sentiment. CineFlux provides a structured, interpretable account of how different audiences engage with cinema along moral and motivational dimensions. The system's technical deliverable is not designed to be read by the audience experts who will use it in practice. This walkthrough bridges that gap. Nine thematically bounded blocks move from the problem CineFlux addresses, namely why sentiment classifiers and aggregate ratings lose the psychological specificity that audience research requires, through the theoretical model (Moral Foundations and Motivational Orientation operationalised as reception variables), the LLM-based annotation pipeline (Trigger–Appraisal–Stance extraction), the corpus and cohort scoring architecture, profile reading, divergence analysis, and a field-by-field reference for the tool interface and JSON output schema. A final block documents the MVP's current design and limitations: data scope, model coverage, pipeline validation status, and the interpretive conditions under which outputs should be treated with caution. Each block is self-contained and readable in isolation; read in sequence, they accumulate into a working mental model of the system precise enough to generate, interrogate, and appropriately caveat CineFlux findings in research and policy contexts.",
+      "bibtex": "@article{pita2026cineflux,\n  doi = {10.5281/ZENODO.19181728},\n  url = {https://zenodo.org/doi/10.5281/zenodo.19181728},\n  author = {Marques Pita, Manuel and Martins, Mauricio and Saraiva, Bruno and Pirola, Zuil},\n  title = {Cineflux model and dashboard specification walkthrough},\n  publisher = {Zenodo},\n  year = {2026},\n  copyright = {Creative Commons Attribution 4.0 International}\n}"
+    },
+    {
+      "id": "W7109231481",
+      "title": "CresCine's Film Industry Data Repository (FIDA)",
+      "year": 2025,
+      "date": "2025-12-05",
+      "type": "report",
+      "venue": "Zenodo",
+      "authors": [
+        {
+          "name": "Indrek Ibrus",
+          "me": false
+        },
+        {
+          "name": "Manuel Marques-Pita",
+          "me": false
+        },
+        {
+          "name": "Gabriela Eleuterio Soares",
+          "me": false
+        },
+        {
+          "name": "João Pedro Carvalho",
+          "me": false
+        },
+        {
+          "name": "Tiago O. Paiva",
+          "me": false
+        },
+        {
+          "name": "Ksenia Mukhina",
+          "me": false
+        },
+        {
+          "name": "Andres Karjus",
+          "me": false
+        },
+        {
+          "name": "Ana Falcón",
+          "me": false
+        },
+        {
+          "name": "Zuil Pirola",
+          "me": false
+        },
+        {
+          "name": "Bruno D. Ferreira-Saraiva",
+          "me": true
+        },
+        {
+          "name": "Marius Øfsti",
+          "me": false
+        },
+        {
+          "name": "Aksel Nõmmela",
+          "me": false
+        },
+        {
+          "name": "Alisa Zeleva",
+          "me": false
+        },
+        {
+          "name": "Jukka Huhtala",
+          "me": false
+        },
+        {
+          "name": "Jenny Grouiller-Ruhland",
+          "me": false
+        },
+        {
+          "name": "Saara Hyvönen",
+          "me": false
+        },
+        {
+          "name": "Timo Norros",
+          "me": false
+        },
+        {
+          "name": "Sergei Posysaev",
+          "me": false
+        },
+        {
+          "name": "Vejune Zemaityte",
+          "me": false
+        }
+      ],
+      "doi": "10.5281/zenodo.17829235",
+      "links": {
+        "doi": "https://doi.org/10.5281/zenodo.17829235"
+      },
+      "citations": 0,
+      "abstract": "The Film Industry Data Repository (FIDA) is a lifecycle-wide, multi-source database developed by the CresCine consortium1 to address the persistent data scarcity facing Europe’s small and mid-sized film markets. Built on a scalable Databricks architecture and structured through a medallion pipeline (Bronze–Silver–Gold), FIDA integrates heterogeneous datasets covering production metadata, festival circulation, theatrical distribution (showtimes, admissions, box-office), streaming availability, television programming, and socio-economic context. Data from public and open infrastructures (TMDB, Wikidata, Lumiere, World Bank), institutional partners (Cinando, European Audiovisual Observatory), and selected commercial providers (International Showtimes, UsherU, media-press.tv) are cleaned, harmonised, and linked through an internal identifier (CresCine ID) using deterministic and fuzzy-matching techniques. The resulting star-schema repository enables cross-window, cross-territory analysis of European films with a granularity not previously available, especially for countries underrepresented in commercial analytics services. FIDA is disseminated through interactive analytical dashboards and simulation tools, supported by the release of specialised aggregated datasets that comply with licensing restrictions. Designed for long-term sustainability and interoperability, FIDA provides a durable evidence base for researchers, policymakers, and industry stakeholders seeking to understand and strengthen European film circulation, performance, and public value creation.",
+      "bibtex": "@article{ibrus2025crescine,\n  doi = {10.5281/ZENODO.17829235},\n  url = {https://zenodo.org/doi/10.5281/zenodo.17829235},\n  author = {Ibrus, Indrek and Marques Pita, Manuel and Eleuterio Soares, Gabriela and Carvalho, João Pedro and Paiva, Tiago and Mukhina, Ksenia and Karjus, Andres and Falcón, Ana and Pirola, Zuil and Saraiva, Bruno and Øfsti, Marius and Nõmmela, Aksel and Zeleva, Alisa and Huhtala, Jukka and Grouiller-Ruhland, Jenny and Hyvönen, Saara and Norros, Timo and Posysaev, Sergei and Zemaityte, Vejune},\n  keywords = {Film production, Film distribution, Film data, Film analytics, European film market},\n  title = {CresCine's Film Industry Data Repository (FIDA)},\n  publisher = {Zenodo},\n  year = {2025},\n  copyright = {Creative Commons Attribution 4.0 International}\n}"
+    },
+    {
+      "id": "W7140077208",
+      "title": "Technical workshops Personas's Dashboard WP 7. Task 7.3",
+      "year": 2025,
+      "date": "2025-12-01",
+      "type": "report",
+      "venue": "Zenodo",
+      "authors": [
+        {
+          "name": "Manuel Marques-Pita",
+          "me": false
+        },
+        {
+          "name": "Mauricio J. D. Martins",
+          "me": false
+        },
+        {
+          "name": "Bruno Saraiva",
+          "me": true
+        },
+        {
+          "name": "Zuil Pirola",
+          "me": false
+        }
+      ],
+      "doi": "10.5281/zenodo.18799561",
+      "links": {
+        "doi": "https://doi.org/10.5281/zenodo.18799561"
+      },
+      "citations": 0,
+      "abstract": "This file contains the slide deck(s) used for the CresCine WP7.3 technical workshops on the CineFlux (Cineflux) audience-modelling workstream. The material documents the progression from an initial comparative “biases between countries” MVP concept (Workshop 1) to an empirically informed modelling pipeline and an interpretable, explanatory dashboard concept (Workshops 2 and subsequent updates). The deck combines (i) the project rationale and use-cases for public film funders and policy stakeholders, (ii) exploratory analyses of large-scale audience reviews (e.g., Letterboxd and Rotten Tomatoes) using hierarchical topic modelling and mixed-method interpretation (including verb/adjective frequency profiling and LLM-assisted coherence summaries), and (iii) a theoretically grounded, hierarchical five-dimensional model for film–audience characterisation. The model is operationalised via fine-grained binary/ternary “micro-features” that are saturated using LLM prompts and transparently aggregated into interpretable scores, supporting an explicit epistemic stance: explanation rather than prediction. In addition to the conceptual framework, the document includes concrete examples (e.g., “The Girl with the Needle”, “Kneecap”, “Amelia’s Children”), interim morality/bias scoring prototypes, system-architecture notes, data-tiering and saturation strategy, and dated status updates and planning milestones across 2025 (e.g., March–November updates, scheduling adjustments for digital focus groups, and dashboard mock-up planning).",
+      "bibtex": "@article{pita2025technical,\n  doi = {10.5281/ZENODO.18799561},\n  url = {https://zenodo.org/doi/10.5281/zenodo.18799561},\n  author = {Marques Pita, Manuel and Martins, Mauricio and Saraiva, Bruno and Pirola, Zuil},\n  keywords = {crescine, film audiences, artificial intelligence, public film reviews, reception modelling, xAI, personas dashboard, cineflux},\n  language = {en},\n  title = {Technical workshops Personas's Dashboard WP 7. Task 7.3},\n  publisher = {Zenodo},\n  year = {2026},\n  copyright = {Creative Commons Attribution 4.0 International}\n}"
+    },
+    {
+      "id": "W4414156393",
+      "title": "GPT-4.1 Sets the Standard in Automated Experiment Design Using Novel Python Libraries",
+      "year": 2025,
+      "date": "2025-09-08",
+      "type": "journal",
+      "venue": "Future Internet",
+      "authors": [
+        {
+          "name": "Nuno Fachada",
+          "me": false
+        },
+        {
+          "name": "Daniel F. S. Fernandes",
+          "me": false
+        },
+        {
+          "name": "Carlos M. Fernandes",
+          "me": false
+        },
+        {
+          "name": "Bruno D. Ferreira-Saraiva",
+          "me": true
+        },
+        {
+          "name": "João Pedro Matos-Carvalho",
+          "me": false
+        }
+      ],
+      "doi": "10.3390/fi17090412",
+      "links": {
+        "doi": "https://doi.org/10.3390/fi17090412",
+        "pdf": "https://www.mdpi.com/1999-5903/17/9/412/pdf?version=1757569386"
+      },
+      "citations": 10,
+      "abstract": "Large language models (LLMs) have advanced rapidly as tools for automating code generation in scientific research, yet their ability to interpret and use unfamiliar Python APIs for complex computational experiments remains poorly characterized. This study systematically benchmarks a selection of state-of-the-art LLMs in generating functional Python code for two increasingly challenging scenarios: conversational data analysis with the ParShift library, and synthetic data generation and clustering using pyclugen and scikit-learn. Both experiments use structured, zero-shot prompts specifying detailed requirements but omitting in-context examples. Model outputs are evaluated quantitatively for functional correctness and prompt compliance over multiple runs, and qualitatively by analyzing the errors produced when code execution fails. Results show that only a small subset of models consistently generate correct, executable code. GPT-4.1 achieved a 100% success rate across all runs in both experimental tasks, whereas most other models succeeded in fewer than half of the runs, with only Grok-3 and Mistral-Large approaching comparable performance. In addition to benchmarking LLM performance, this approach helps identify shortcomings in third-party libraries, such as unclear documentation or obscure implementation bugs. Overall, these findings highlight current limitations of LLMs for end-to-end scientific automation and emphasize the need for careful prompt design, comprehensive library documentation, and continued advances in language model capabilities.",
+      "bibtex": "@article{fachada2025gpt,\n  title = {GPT-4.1 Sets the Standard in Automated Experiment Design Using Novel Python Libraries},\n  volume = {17},\n  issn = {1999-5903},\n  url = {http://dx.doi.org/10.3390/fi17090412},\n  doi = {10.3390/fi17090412},\n  number = {9},\n  journal = {Future Internet},\n  publisher = {MDPI AG},\n  author = {Fachada, Nuno and Fernandes, Daniel and Fernandes, Carlos M. and Ferreira-Saraiva, Bruno D. and Matos-Carvalho, João P.},\n  year = {2025},\n  month = sep,\n  pages = {412}\n}"
+    },
+    {
+      "id": "W4389261146",
+      "title": "Use of explicit replies as coordination mechanisms in online student debate",
+      "year": 2023,
+      "date": "2023-11-30",
+      "type": "conference",
+      "venue": "12th International Conference on Complex Networks and their Applications (Complex Networks 2023)",
+      "authors": [
+        {
+          "name": "Bruno D. Ferreira-Saraiva",
+          "me": true
+        },
+        {
+          "name": "João Pedro Matos-Carvalho",
+          "me": false
+        },
+        {
+          "name": "Manuel Marques-Pita",
+          "me": false
+        }
+      ],
+      "doi": "10.48550/arxiv.2311.18466",
+      "links": {
+        "doi": "https://doi.org/10.48550/arxiv.2311.18466",
+        "pdf": "https://arxiv.org/pdf/2311.18466"
+      },
+      "citations": 0,
+      "abstract": "People in conversation entrain their linguistic behaviours through spontaneous alignment mechanisms [7] - both in face-to-face and computer-mediated communication (CMC) [8]. In CMC, one of the mechanisms through which linguistic entrainment happens is through explicit replies. Indeed, the use of explicit replies influences the structure of conversations, favouring the formation of reply-trees typically delineated by topic shifts [5]. The interpersonal coordination mechanisms realized by how actors address each other have been studied using a probabilistic framework proposed by David Gibson [2,3]. Other recent approaches use computational methods and information theory to quantify changes in text. We explore coordination mechanisms concerned with some of the roles utterances play in dialogues - specifically in explicit replies. We identify these roles by finding community structure in the conversation's vocabulary using a non-parametric, hierarchical topic model. Some conversations may always stay on the ground, remaining at the level of general introductory chatter. Some others may develop a specific sub-topic in significant depth and detail. Even others may jump between general chatter, out-of-topic remarks and people agreeing or disagreeing without further elaboration.",
+      "note": {
+        "en": "Extended abstract",
+        "pt": "Resumo alargado"
+      },
+      "award": {
+        "en": "Best Poster Award",
+        "pt": "Prémio de Melhor Poster"
+      },
+      "bibtex": "@inproceedings{saraiva2023use,\n  title = {{Use of explicit replies as coordination mechanisms in online student debate}},\n  author = {Bruno D. Ferreira-Saraiva and João Pedro Matos-Carvalho and Manuel Marques-Pita},\n  year = {2023},\n  booktitle = {12th International Conference on Complex Networks and their Applications (Complex Networks 2023)},\n  note = {Extended abstract},\n  doi = {10.48550/arxiv.2311.18466}\n}"
+    },
+    {
+      "id": "W4388800948",
+      "title": "ParShift: a Python package to study order and differentiation in group conversations",
+      "year": 2023,
+      "date": "2023-11-18",
+      "type": "software",
+      "venue": "SoftwareX",
+      "authors": [
+        {
+          "name": "Bruno D. Ferreira-Saraiva",
+          "me": true
+        },
+        {
+          "name": "João Pedro Matos-Carvalho",
+          "me": false
+        },
+        {
+          "name": "Nuno Fachada",
+          "me": false
+        },
+        {
+          "name": "Manuel Marques-Pita",
+          "me": false
+        }
+      ],
+      "doi": "10.1016/j.softx.2023.101554",
+      "links": {
+        "doi": "https://doi.org/10.1016/j.softx.2023.101554",
+        "pdf": "http://www.softxjournal.com/article/S2352711023002509/pdf",
+        "preprint": "https://doi.org/10.2139/ssrn.4499270"
+      },
+      "citations": 1,
+      "abstract": "Collective organization in multi-party conversations emerges through the exchange of utterances between participants. While most research has focused on content-centred mechanisms that lead to emergent conversational coordination, less attention has been given to explaining conversational order based on who is addressed and who responds, especially when dealing with large conversational datasets. In this paper, we introduce a Python library, ParShift , that implements a state-of-the-art theoretical quantitative framework known as Participation Shifts . This framework enables researchers to study participant-centred order and differentiation in multi-party conversations. With ParShift , researchers can characterize conversations by quantifying the probabilities of events related to how people address each other during conversations. This library is particularly useful for studying conversation threads in social networks, parliamentary debates, team meetings, or student debates on a large scale.",
+      "bibtex": "@article{saraiva2023parshift,\n  title = {ParShift: a Python package to study order and differentiation in group conversations},\n  volume = {24},\n  issn = {2352-7110},\n  url = {http://dx.doi.org/10.1016/j.softx.2023.101554},\n  doi = {10.1016/j.softx.2023.101554},\n  journal = {SoftwareX},\n  publisher = {Elsevier BV},\n  author = {Ferreira-Saraiva, Bruno D. and Matos-Carvalho, João P. and Fachada, Nuno and Pita, Manuel},\n  year = {2023},\n  month = dec,\n  pages = {101554}\n}"
+    },
+    {
+      "id": "W4381854014",
+      "title": "QiBERT - Classifying Online Conversations",
+      "year": 2023,
+      "date": "2023-01-01",
+      "type": "conference",
+      "venue": "IFIP advances in information and communication technology",
+      "authors": [
+        {
+          "name": "Bruno D. Ferreira-Saraiva",
+          "me": true
+        },
+        {
+          "name": "Manuel Marques-Pita",
+          "me": false
+        },
+        {
+          "name": "João Pedro Matos-Carvalho",
+          "me": false
+        },
+        {
+          "name": "Zuil Pirola",
+          "me": false
+        }
+      ],
+      "doi": "10.1007/978-3-031-36007-7_16",
+      "links": {
+        "doi": "https://doi.org/10.1007/978-3-031-36007-7_16",
+        "pdf": "https://arxiv.org/pdf/2409.05530"
+      },
+      "citations": 1,
+      "bibtex": "@inbook{saraiva2023qibert,\n  title = {QiBERT - Classifying Online Conversations: Messages with BERT as a Feature},\n  isbn = {9783031360077},\n  issn = {1868-422X},\n  url = {http://dx.doi.org/10.1007/978-3-031-36007-7_16},\n  doi = {10.1007/978-3-031-36007-7_16},\n  booktitle = {Technological Innovation for Connected Cyber Physical Spaces},\n  publisher = {Springer Nature Switzerland},\n  author = {Ferreira-Saraiva, Bruno D. and Marques-Pita, Manuel and Matos-Carvalho, João Pedro and Pirola, Zuil},\n  year = {2023},\n  pages = {216–229}\n}"
+    }
+  ]
+}

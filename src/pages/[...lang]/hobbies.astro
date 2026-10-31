@@ -1,0 +1,776 @@
+---
+import HobbiesLayout from '../../layouts/HobbiesLayout.astro';
+import { formatDate, htmlLang, langStaticPaths, localeFromParam, localized, t } from '../../i18n/ui';
+import { hobbies, profile, publicFileExists, strava } from '../../lib/data';
+
+export const getStaticPaths = langStaticPaths;
+
+const locale = localeFromParam(Astro.params.lang);
+const number = new Intl.NumberFormat(htmlLang(locale));
+const stats = strava.stats;
+const year = stats?.year ?? new Date().getFullYear();
+
+const primary = stats
+  ? [
+      { value: stats.ytd.distanceKm, label: t(locale, 'hobbies.stat.ytdKm', { year }) },
+      { value: stats.ytd.elevationM, label: t(locale, 'hobbies.stat.ytdElev', { year }) },
+      { value: stats.ytd.count, label: t(locale, stats.ytd.count === 1 ? 'hobbies.stat.ytdRides.one' : 'hobbies.stat.ytdRides.other', { year }) },
+    ]
+  : [];
+const secondary = stats
+  ? [
+      { value: stats.all.distanceKm, label: t(locale, 'hobbies.stat.allKm') },
+      { value: stats.longestRideKm, label: t(locale, 'hobbies.stat.longest') },
+      { value: stats.biggestClimbM, label: t(locale, 'hobbies.stat.climb') },
+    ]
+  : [];
+
+const { football, cycling, padel } = hobbies;
+const cyclingPhoto = publicFileExists(cycling.photo) ? cycling.photo : undefined;
+const padelPhoto = publicFileExists(padel.photo) ? padel.photo : undefined;
+---
+
+<HobbiesLayout locale={locale} title={`${t(locale, 'hobbies.title')} · ${profile.name}`} description={t(locale, 'hobbies.description')}>
+  <section class="hero">
+    <p class="kicker">bdfsaraiva <span>/</span> {t(locale, 'hobbies.kicker')}</p>
+    <h1 class="title">
+      <span class="outline">{t(locale, 'hobbies.heading1')}</span>
+      <span class="solid">{t(locale, 'hobbies.heading2')}</span>
+    </h1>
+    <p class="lede">{localized(hobbies.intro, locale)}</p>
+
+    <!-- Line pictograms of the three sports on the page: football, cycling and padel. -->
+    <div class="sports" aria-hidden="true">
+      <svg class="sport sport-football" viewBox="0 0 100 100">
+        <g class="spin-slow">
+          <circle cx="50" cy="50" r="44"></circle>
+          <path class="solid-shape" d="M50 36 L63.3 45.7 L58.2 61.3 L41.8 61.3 L36.7 45.7 Z"></path>
+          <path
+            d="M50 36V20 M63.3 45.7L78.5 40.7 M58.2 61.3L67.6 74.3 M41.8 61.3L32.4 74.3 M36.7 45.7L21.5 40.7 M50 20L33.5 9.2 M50 20L66.5 9.2 M78.5 40.7L83.7 21.7 M78.5 40.7L93.9 53.1 M67.6 74.3L87.3 73.3 M67.6 74.3L60.6 92.7 M32.4 74.3L39.4 92.7 M32.4 74.3L12.7 73.3 M21.5 40.7L6.1 53.1 M21.5 40.7L16.3 21.7"
+          ></path>
+        </g>
+      </svg>
+
+      <svg class="sport sport-bike" viewBox="0 0 160 100">
+        <g class="wheel">
+          <circle cx="35" cy="65" r="28"></circle>
+          <circle cx="35" cy="65" r="2.5"></circle>
+          <path d="M35 37V93 M7 65H63 M15.2 45.2L54.8 84.8 M54.8 45.2L15.2 84.8"></path>
+        </g>
+        <g class="wheel">
+          <circle cx="125" cy="65" r="28"></circle>
+          <circle cx="125" cy="65" r="2.5"></circle>
+          <path d="M125 37V93 M97 65H153 M105.2 45.2L144.8 84.8 M144.8 45.2L105.2 84.8"></path>
+        </g>
+        <path d="M35 65 L78 65 L68 30 Z M68 30 L112 30 M78 65 L115 40 M112 30 L115 40 L125 65 M68 30 V25 M60 25 H77 M112 30 L110 23 M104 23 H117 q6 0 6 6 v3"></path>
+        <circle cx="78" cy="65" r="5"></circle>
+      </svg>
+
+      <svg class="sport sport-padel" viewBox="0 0 100 150">
+        <g class="swing">
+          <path d="M50 6 C77 6 92 27 92 52 C92 77 76 95 59 101 L57 116 H43 L41 101 C24 95 8 77 8 52 C8 27 23 6 50 6 Z"></path>
+          <rect x="42" y="116" width="16" height="28" rx="4"></rect>
+          <g class="solid-shape">
+            <circle cx="38" cy="30" r="2.4"></circle><circle cx="50" cy="30" r="2.4"></circle><circle cx="62" cy="30" r="2.4"></circle>
+            <circle cx="32" cy="42" r="2.4"></circle><circle cx="44" cy="42" r="2.4"></circle><circle cx="56" cy="42" r="2.4"></circle><circle cx="68" cy="42" r="2.4"></circle>
+            <circle cx="26" cy="54" r="2.4"></circle><circle cx="38" cy="54" r="2.4"></circle><circle cx="50" cy="54" r="2.4"></circle><circle cx="62" cy="54" r="2.4"></circle><circle cx="74" cy="54" r="2.4"></circle>
+            <circle cx="32" cy="66" r="2.4"></circle><circle cx="44" cy="66" r="2.4"></circle><circle cx="56" cy="66" r="2.4"></circle><circle cx="68" cy="66" r="2.4"></circle>
+            <circle cx="38" cy="78" r="2.4"></circle><circle cx="50" cy="78" r="2.4"></circle><circle cx="62" cy="78" r="2.4"></circle>
+          </g>
+        </g>
+        <circle class="solid-shape" cx="88" cy="12" r="8"></circle>
+      </svg>
+    </div>
+  </section>
+
+  <section class="band football" aria-labelledby="football-title">
+    <div class="band-head">
+      <span class="index">01</span>
+      <h2 id="football-title">{t(locale, 'hobbies.football')}</h2>
+      <span class="scoreboard" aria-hidden="true">FT · 2021</span>
+    </div>
+    <div class="football-body">
+      <p class="position">{localized(football.position, locale)}</p>
+      <p>{localized(football.text, locale)}</p>
+      {
+        football.stats && (
+          <p class="career-totals">
+            <span>{t(locale, football.stats.games === 1 ? 'hobbies.games.one' : 'hobbies.games.other', { n: football.stats.games })}</span>
+            {football.stats.cupGames > 0 && <span>{t(locale, 'hobbies.cupGames', { n: football.stats.cupGames })}</span>}
+          </p>
+        )
+      }
+      {football.league && <p class="league">{localized(football.league, locale)}</p>}
+      {
+        football.seasons.length > 0 && (
+          <ol class="seasons" aria-label={t(locale, 'hobbies.senior')}>
+            {football.seasons.map((entry) => (
+              <li>
+                <span>{entry.season}</span>
+                {entry.club}
+              </li>
+            ))}
+          </ol>
+        )
+      }
+      {
+        football.youth && football.youth.length > 0 && (
+          <p class="youth">
+            <span>{t(locale, 'hobbies.youth')}</span> {football.youth.map((club) => club.replaceAll(' ', ' ')).join(' · ')}
+          </p>
+        )
+      }
+      {
+        football.profileUrl && (
+          <a class="arrow-link" href={football.profileUrl} rel="noopener">
+            {t(locale, 'hobbies.career')} <span aria-hidden="true">↗</span>
+          </a>
+        )
+      }
+    </div>
+  </section>
+
+  <section class="feature cycling" aria-labelledby="cycling-title">
+    <svg class="profile-line" viewBox="0 0 1200 160" preserveAspectRatio="none" aria-hidden="true">
+      <path
+        d="M0 140 L90 128 L160 134 L240 104 L300 112 L380 70 L430 82 L520 34 L570 50 L640 22 L700 44 L780 60 L860 40 L930 88 L1010 96 L1080 126 L1200 118"
+        fill="none"
+        stroke="var(--hb-lime)"
+        stroke-width="3"
+        vector-effect="non-scaling-stroke"></path>
+    </svg>
+    <div class="feature-head">
+      <span class="index">02</span>
+      <h2 id="cycling-title">{t(locale, 'hobbies.cycling')}</h2>
+    </div>
+    <p class="feature-text">{localized(cycling.text, locale)}</p>
+
+    {
+      stats && (
+        <>
+          <ul class="stats primary">
+            {primary.map((stat) => (
+              <li>
+                <span class="value" data-count={stat.value} aria-hidden="true">
+                  {number.format(stat.value)}
+                </span>
+                <span class="label">
+                  <span class="hb-sr">{number.format(stat.value)} </span>
+                  {stat.label}
+                </span>
+              </li>
+            ))}
+          </ul>
+          <ul class="stats secondary">
+            {secondary.map((stat) => (
+              <li>
+                <span class="value" data-count={stat.value} aria-hidden="true">
+                  {number.format(stat.value)}
+                </span>
+                <span class="label">
+                  <span class="hb-sr">{number.format(stat.value)} </span>
+                  {stat.label}
+                </span>
+              </li>
+            ))}
+          </ul>
+          <p class="source">{t(locale, 'hobbies.strava', { date: formatDate(strava.updatedAt, locale, { dateStyle: 'medium' }) })}</p>
+        </>
+      )
+    }
+    {cyclingPhoto && <img class="feature-photo" src={cyclingPhoto} alt="" loading="lazy" />}
+  </section>
+
+  <section class="feature padel" aria-labelledby="padel-title">
+    <div class="feature-head">
+      <span class="index">03</span>
+      <h2 id="padel-title">{t(locale, 'hobbies.padel')}</h2>
+    </div>
+    <div class="padel-grid">
+      <figure class="court">
+        {
+          padelPhoto ? (
+            <img src={padelPhoto} alt="" loading="lazy" />
+          ) : (
+            <svg viewBox="0 0 200 100" aria-hidden="true">
+              <rect x="4" y="4" width="192" height="92" fill="none" stroke="var(--hb-lime)" stroke-width="1.5" />
+              <line x1="100" y1="0" x2="100" y2="100" stroke="#f2f1ea" stroke-width="2.5" stroke-dasharray="3 3" />
+              <line x1="31" y1="4" x2="31" y2="96" stroke="var(--hb-lime)" stroke-width="1.5" />
+              <line x1="169" y1="4" x2="169" y2="96" stroke="var(--hb-lime)" stroke-width="1.5" />
+              <line x1="31" y1="50" x2="169" y2="50" stroke="var(--hb-lime)" stroke-width="1.5" />
+              <circle class="court-ball" cx="138" cy="30" r="4" fill="var(--hb-lime)" />
+            </svg>
+          )
+        }
+      </figure>
+      <div class="padel-info">
+        {
+          padel.since && (
+            <p class="career-totals">
+              <span>{t(locale, 'hobbies.since', { year: padel.since })}</span>
+            </p>
+          )
+        }
+        <p class="feature-text">{localized(padel.text, locale)}</p>
+        {
+          padel.leagueClubs && padel.leagueClubs.length > 0 && (
+            <div class="league-clubs">
+              <p class="clubs-label">{t(locale, 'hobbies.leagueClubs')}</p>
+              <ol class="seasons">
+                {padel.leagueClubs.map((club) => (
+                  <li class:list={{ 'club-current': club.current }}>
+                    {club.name}
+                    {club.current && <em>{t(locale, 'hobbies.currentClub')}</em>}
+                  </li>
+                ))}
+              </ol>
+            </div>
+          )
+        }
+      </div>
+    </div>
+  </section>
+
+  <footer class="hb-footer">
+    <p>© {new Date().getFullYear()} {profile.name}</p>
+    <a href="#main" aria-label={t(locale, 'hobbies.top')}><span aria-hidden="true">↑</span></a>
+  </footer>
+</HobbiesLayout>
+
+<script>
+  // Count the Strava numbers up when they scroll into view (skipped for reduced motion).
+  const values = [...document.querySelectorAll<HTMLElement>('[data-count]')];
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (values.length && !reduceMotion && 'IntersectionObserver' in window) {
+    const format = new Intl.NumberFormat(document.documentElement.lang);
+    const animate = (el: HTMLElement) => {
+      const target = Number(el.dataset.count);
+      const start = performance.now();
+      const duration = 1400;
+      const step = (now: number) => {
+        const progress = Math.min((now - start) / duration, 1);
+        el.textContent = format.format(Math.round(target * (1 - (1 - progress) ** 3)));
+        if (progress < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    };
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          observer.unobserve(entry.target);
+          animate(entry.target as HTMLElement);
+        }
+      },
+      { threshold: 0.6 },
+    );
+    for (const el of values) {
+      el.textContent = format.format(0);
+      observer.observe(el);
+    }
+  }
+</script>
+
+<style>
+  section {
+    position: relative;
+    padding: 0 var(--hb-gutter);
+  }
+
+  /* ---------------------------------------------------------------- hero */
+  .hero {
+    padding-top: clamp(48px, 12vw, 140px);
+    padding-bottom: clamp(56px, 10vw, 120px);
+    overflow: hidden;
+  }
+
+  /* Three sport pictograms: a row under the intro on small screens, a staggered cluster on wide ones. */
+  .sports {
+    display: flex;
+    align-items: flex-end;
+    gap: 28px;
+    margin-top: 40px;
+    color: var(--hb-lime);
+  }
+
+  .sport {
+    display: block;
+    height: auto;
+    overflow: visible;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .sport * {
+    vector-effect: non-scaling-stroke;
+  }
+
+  .sport .solid-shape {
+    fill: currentColor;
+    stroke: none;
+  }
+
+  .sport-football {
+    width: 64px;
+  }
+
+  .sport-bike {
+    width: 104px;
+    color: var(--hb-fg);
+  }
+
+  .sport-padel {
+    width: 42px;
+  }
+
+  @media (min-width: 1100px) {
+    .sports {
+      position: absolute;
+      top: clamp(96px, 10vw, 140px);
+      right: var(--hb-gutter);
+      display: block;
+      width: clamp(300px, 30vw, 440px);
+      aspect-ratio: 9 / 10;
+      margin: 0;
+    }
+
+    .sport {
+      position: absolute;
+    }
+
+    .sport-football {
+      top: 0;
+      right: 8%;
+      width: 40%;
+    }
+
+    .sport-bike {
+      top: 36%;
+      left: 0;
+      width: 72%;
+    }
+
+    .sport-padel {
+      right: 0;
+      bottom: 0;
+      width: 27%;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .spin-slow,
+    .wheel,
+    .swing {
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+
+    .spin-slow {
+      animation: spin 30s linear infinite;
+    }
+
+    .wheel {
+      animation: spin 5s linear infinite;
+    }
+
+    .swing {
+      transform-origin: 50% 100%;
+      animation: swing 3.5s ease-in-out infinite alternate;
+    }
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes swing {
+    from {
+      transform: rotate(-7deg);
+    }
+
+    to {
+      transform: rotate(7deg);
+    }
+  }
+
+  .kicker {
+    font-family: var(--hb-display);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--hb-muted);
+  }
+
+  .kicker span {
+    color: var(--hb-lime);
+  }
+
+  .title {
+    display: grid;
+    margin-top: 12px;
+    font-family: var(--hb-display);
+    font-weight: 800;
+    font-size: clamp(4.2rem, 17vw, 12.5rem);
+    line-height: 0.84;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+  }
+
+  .outline {
+    color: transparent;
+    -webkit-text-stroke: 2px var(--hb-fg);
+  }
+
+  .solid {
+    color: var(--hb-lime);
+  }
+
+  .lede {
+    max-width: 34ch;
+    margin-top: 28px;
+    font-size: 1.25rem;
+    color: var(--hb-muted);
+  }
+
+  /* ------------------------------------------------------------ football */
+  .band {
+    display: grid;
+    gap: 20px;
+    padding-block: 32px;
+    border-block: 1px solid var(--hb-line);
+    background: var(--hb-bg-2);
+  }
+
+  .band-head,
+  .feature-head {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    font-family: var(--hb-display);
+    text-transform: uppercase;
+  }
+
+  .index {
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+    color: var(--hb-lime);
+  }
+
+  .band-head h2 {
+    font-weight: 800;
+    font-size: 2rem;
+    letter-spacing: 0.02em;
+  }
+
+  .scoreboard {
+    margin-left: auto;
+    padding: 2px 10px;
+    border: 1px solid var(--hb-line);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    letter-spacing: 0.12em;
+    color: var(--hb-muted);
+  }
+
+  .football-body {
+    display: grid;
+    gap: 12px;
+    max-width: 68ch;
+    color: var(--hb-muted);
+  }
+
+  .position {
+    font-family: var(--hb-display);
+    font-weight: 600;
+    font-size: 1.125rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--hb-fg);
+  }
+
+  /* Senior totals read like a scoreline: "76 official matches · 6 in the Taça de Portugal". */
+  .career-totals {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px 18px;
+    font-family: var(--hb-display);
+    font-weight: 600;
+    font-size: 1.25rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--hb-lime);
+  }
+
+  .league {
+    margin-top: -4px;
+    font-size: 0.9375rem;
+  }
+
+  .youth {
+    font-size: 0.9375rem;
+  }
+
+  .youth span {
+    margin-right: 8px;
+    font-family: var(--hb-display);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--hb-fg);
+  }
+
+  .seasons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .seasons li {
+    padding: 3px 10px;
+    border: 1px solid var(--hb-line);
+    font-size: 0.9375rem;
+    color: var(--hb-fg);
+  }
+
+  .seasons span {
+    margin-right: 8px;
+    font-family: var(--hb-display);
+    font-weight: 600;
+    color: var(--hb-lime);
+  }
+
+  .arrow-link {
+    width: fit-content;
+    font-family: var(--hb-display);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--hb-fg);
+    border-bottom: 2px solid var(--hb-lime);
+  }
+
+  .arrow-link:hover {
+    color: var(--hb-lime);
+  }
+
+  @media (min-width: 900px) {
+    .band {
+      grid-template-columns: 340px 1fr;
+      align-items: start;
+    }
+
+    .scoreboard {
+      margin-left: 8px;
+    }
+  }
+
+  /* ------------------------------------------------------------- features */
+  .feature {
+    display: grid;
+    gap: 24px;
+    padding-block: clamp(64px, 11vw, 128px);
+  }
+
+  /* Big sections: the index sits above the heading as a label ("02 ——"). */
+  .feature-head {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .feature-head .index::after {
+    content: '';
+    display: inline-block;
+    width: 48px;
+    height: 2px;
+    margin-left: 12px;
+    vertical-align: middle;
+    background: var(--hb-lime);
+  }
+
+  .feature-head h2 {
+    font-weight: 800;
+    font-size: clamp(3.4rem, 12vw, 8.5rem);
+    line-height: 0.85;
+    letter-spacing: -0.01em;
+  }
+
+  .feature-text {
+    max-width: 52ch;
+    font-size: 1.1875rem;
+    color: var(--hb-muted);
+  }
+
+  .profile-line {
+    position: absolute;
+    left: 0;
+    top: clamp(48px, 9vw, 100px);
+    width: 100%;
+    height: 120px;
+    opacity: 0.35;
+    z-index: -1;
+  }
+
+  .stats {
+    display: grid;
+    gap: 28px 32px;
+  }
+
+  .stats li {
+    display: grid;
+    gap: 4px;
+    padding-top: 14px;
+    border-top: 1px solid var(--hb-line);
+  }
+
+  .value {
+    font-family: var(--hb-display);
+    font-weight: 800;
+    line-height: 0.9;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .primary .value {
+    font-size: clamp(3.6rem, 11vw, 7.5rem);
+    color: var(--hb-lime);
+  }
+
+  .secondary .value {
+    font-size: clamp(2.2rem, 6vw, 3.6rem);
+  }
+
+  .label {
+    font-family: var(--hb-display);
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--hb-muted);
+  }
+
+  .source {
+    font-size: 0.875rem;
+    color: var(--hb-muted);
+  }
+
+  .source::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin-right: 8px;
+    border-radius: 50%;
+    background: #fc4c02;
+  }
+
+  .feature-photo {
+    width: 100%;
+    max-height: 520px;
+    object-fit: cover;
+  }
+
+  @media (min-width: 720px) {
+    .stats {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  /* ---------------------------------------------------------------- padel */
+  .padel {
+    border-top: 1px solid var(--hb-line);
+  }
+
+  .padel-info {
+    display: grid;
+    gap: 18px;
+  }
+
+  .clubs-label {
+    margin-bottom: 8px;
+    font-family: var(--hb-display);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  /* The club he plays for now gets the lime frame and a small "current club" tag. */
+  .seasons .club-current {
+    border-color: var(--hb-lime);
+  }
+
+  .club-current em {
+    margin-left: 8px;
+    font-family: var(--hb-display);
+    font-style: normal;
+    font-weight: 600;
+    font-size: 0.8125rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--hb-lime);
+  }
+
+  .padel-grid {
+    display: grid;
+    gap: 32px;
+    align-items: center;
+  }
+
+  .court {
+    margin: 0;
+    padding: 20px;
+    border: 1px solid var(--hb-line);
+    background: repeating-linear-gradient(90deg, transparent 0 22px, rgb(200 245 60 / 0.03) 22px 23px), var(--hb-bg-2);
+  }
+
+  .court svg,
+  .court img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .court-ball {
+      animation: rally 3.2s ease-in-out infinite alternate;
+    }
+  }
+
+  @keyframes rally {
+    to {
+      transform: translate(-90px, 42px);
+    }
+  }
+
+  @media (min-width: 900px) {
+    .padel-grid {
+      grid-template-columns: 1.1fr 1fr;
+      gap: 56px;
+    }
+  }
+
+  /* --------------------------------------------------------------- footer */
+  .hb-footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 24px var(--hb-gutter) 32px;
+    border-top: 1px solid var(--hb-line);
+    font-family: var(--hb-display);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--hb-muted);
+  }
+
+  .hb-footer a {
+    text-decoration: none;
+    color: var(--hb-lime);
+  }
+</style>

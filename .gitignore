@@ -1,0 +1,23 @@
+# build output
+dist/
+.astro/
+
+# dependencies
+node_modules/
+
+# logs
+npm-debug.log*
+
+# environment / secrets
+.env
+.env.*
+
+# editor & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# local agent state / screenshots
+.omc/
+.playwright-mcp/

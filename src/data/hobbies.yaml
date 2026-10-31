@@ -1,0 +1,65 @@
+# Hobbies page. Cycling numbers come from Strava (src/data/generated/strava.json).
+
+intro:
+  en: >-
+    Sport has been part of my life since childhood: first in competitive football and, today, in
+    cycling and padel.
+  pt: >-
+    O desporto acompanha-me desde a infância: primeiro no futebol federado e, atualmente, no ciclismo e
+    no padel.
+
+football:
+  position:
+    en: Right-back
+    pt: Lateral direito
+  text:
+    en: >-
+      I trained in the youth academies of Amora, Benfica and Belenenses and played five senior seasons
+      as a right-back, until an anterior cruciate ligament and meniscus injury ended my career in 2021.
+    pt: >-
+      Fiz a formação no Amora, no Benfica e no Belenenses e disputei cinco épocas como sénior, a lateral
+      direito, até que uma lesão no ligamento cruzado anterior e nos meniscos encerrou a minha carreira em
+      2021.
+  # Senior official matches, from zerozero ("Histórico Competições").
+  stats: { games: 76, cupGames: 6 }
+  league:
+    en: >-
+      All league matches were played in the Campeonato de Portugal, at the time the third tier of
+      Portuguese football.
+    pt: >-
+      Todos os jogos de campeonato foram disputados no Campeonato de Portugal, à época o terceiro escalão
+      do futebol português.
+  profileUrl: https://www.zerozero.pt/jogador/bruno-saraiva/420274
+  # Senior seasons, oldest first.
+  seasons:
+    - { season: '2016/17', club: Atlético CP }
+    - { season: '2016/17', club: Fabril Barreiro }
+    - { season: '2017/18', club: Olímpico Montijo }
+    - { season: '2018/19', club: Sacavenense }
+    - { season: '2018/19', club: Cova da Piedade S23 }
+    - { season: '2019/20', club: Amora FC }
+    - { season: '2020/21', club: Olímpico Montijo }
+  youth: [Amora FC, Benfica, Belenenses, Casa Pia, Beira-Mar Almada]
+
+cycling:
+  text:
+    en: Cycling is currently my main form of training.
+    pt: Atualmente, o ciclismo é a minha principal forma de treino.
+  # Optional: public/images/hobbies/cycling.jpg
+  photo:
+
+padel:
+  since: 2021
+  text:
+    en: >-
+      I play regularly at several clubs in the region and have competed in the Liga de Clubes for three
+      clubs.
+    pt: >-
+      Jogo regularmente em vários clubes da região e já disputei a Liga de Clubes por três clubes.
+  # Clubs represented in the Liga de Clubes, oldest first.
+  leagueClubs:
+    - { name: Alcochete Indoor Padel }
+    - { name: Best Lane Padel }
+    - { name: Game Set Padel, current: true }
+  # Optional: public/images/hobbies/padel.jpg
+  photo:

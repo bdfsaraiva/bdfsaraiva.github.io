@@ -1,0 +1,233 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PublicationItem from '../../components/PublicationItem.astro';
+import { formatDate, langStaticPaths, localeFromParam, splitTemplate, t } from '../../i18n/ui';
+import { groupByYear, profile, publications } from '../../lib/data';
+import type { PubType } from '../../lib/types';
+
+export const getStaticPaths = langStaticPaths;
+
+const locale = localeFromParam(Astro.params.lang);
+const TYPE_ORDER: PubType[] = ['journal', 'conference', 'software', 'chapter', 'book', 'preprint', 'report', 'other'];
+
+const papers = publications.items.filter((pub) => pub.type !== 'report');
+const reports = publications.items.filter((pub) => pub.type === 'report');
+const counts = new Map<PubType, number>();
+for (const pub of publications.items) counts.set(pub.type, (counts.get(pub.type) ?? 0) + 1);
+const filters = TYPE_ORDER.filter((type) => counts.has(type));
+
+const hasItems = publications.items.length > 0;
+---
+
+<BaseLayout locale={locale} title={`${t(locale, 'pubs.title')} · ${profile.name}`} description={t(locale, 'pubs.description')} active="publications">
+  <header class="container page-head">
+    <p class="path"><b>~/</b>{t(locale, 'nav.publications')}</p>
+    <h1>{t(locale, 'pubs.title')}</h1>
+    <p class="lede">
+      {splitTemplate(locale, 'pubs.intro').map((part) => (part === '{source}' ? <a href="https://openalex.org">OpenAlex</a> : part))}
+      {
+        profile.links.scholar && (
+          <>
+            {' '}
+            {splitTemplate(locale, 'pubs.introScholar').map((part) =>
+              part === '{scholar}' ? <a href={profile.links.scholar}>Google Scholar</a> : part,
+            )}
+          </>
+        )
+      }
+    </p>
+    {
+      publications.updatedAt && (
+        <p class="updated mono">{t(locale, 'pubs.updated', { date: formatDate(publications.updatedAt, locale, { dateStyle: 'medium' }) })}</p>
+      )
+    }
+  </header>
+
+  <div class="container">
+    <p class="visually-hidden" aria-live="polite" data-live></p>
+
+    <div class="filters" role="group" aria-label={t(locale, 'pubs.filter')} data-filters hidden={true} data-enabled={hasItems ? '' : undefined}>
+      <button type="button" class="filter mono" data-filter="all" aria-pressed="true">
+        {t(locale, 'pubs.all')} <span>{publications.items.length}</span>
+      </button>
+      {
+        filters.map((type) => (
+          <button type="button" class="filter mono" data-filter={type} aria-pressed="false">
+            {t(locale, `pubs.type.${type}`)} <span>{counts.get(type)}</span>
+          </button>
+        ))
+      }
+    </div>
+
+    <p class="empty mono" data-empty hidden={hasItems}>{t(locale, 'pubs.empty')}</p>
+
+    {
+      [
+        { id: 'papers', label: t(locale, 'pubs.papers'), items: papers },
+        { id: 'reports', label: t(locale, 'pubs.reports'), items: reports },
+      ]
+        .filter((section) => section.items.length > 0)
+        .map((section) => (
+          <section class="pub-section" data-section aria-labelledby={`${section.id}-title`}>
+            <h2 class="section-label" id={`${section.id}-title`}>
+              {section.label}
+            </h2>
+            {groupByYear(section.items).map(([year, items]) => (
+              <div class="year-group" data-year-group>
+                <h3 class="year mono">{year}</h3>
+                <ol class="pubs">
+                  {items.map((pub) => (
+                    <PublicationItem pub={pub} locale={locale} />
+                  ))}
+                </ol>
+              </div>
+            ))}
+          </section>
+        ))
+    }
+  </div>
+</BaseLayout>
+
+<script>
+  // Type filter: progressive enhancement, the full list is visible without JavaScript.
+  const bar = document.querySelector<HTMLElement>('[data-filters][data-enabled]');
+  if (bar) {
+    bar.hidden = false;
+    const buttons = [...bar.querySelectorAll<HTMLButtonElement>('[data-filter]')];
+    const applyFilter = (type: string) => {
+      for (const button of buttons) button.setAttribute('aria-pressed', String(button.dataset.filter === type));
+      for (const pub of document.querySelectorAll<HTMLElement>('.pub')) pub.hidden = type !== 'all' && pub.dataset.type !== type;
+      for (const group of document.querySelectorAll<HTMLElement>('[data-year-group], [data-section]')) {
+        group.hidden = !group.querySelector('.pub:not([hidden])');
+      }
+      const empty = document.querySelector<HTMLElement>('[data-empty]');
+      if (empty) empty.hidden = Boolean(document.querySelector('.pub:not([hidden])'));
+    };
+    bar.addEventListener('click', (event) => {
+      const button = (event.target as Element).closest<HTMLButtonElement>('[data-filter]');
+      if (button) applyFilter(button.dataset.filter ?? 'all');
+    });
+  }
+
+  // BibTeX: copy to the clipboard; if that is not allowed, reveal the entry so it can be selected.
+  document.addEventListener('click', async (event) => {
+    const button = (event.target as Element).closest<HTMLButtonElement>('[data-bibtex]');
+    if (!button) return;
+    const pre = document.getElementById(button.dataset.bibtex ?? '');
+    if (!pre) return;
+    // Remember the original label once, so a second click within 2 s cannot store "Copied!" as the label.
+    button.dataset.label ??= button.textContent ?? '';
+    let message: string;
+    try {
+      await navigator.clipboard.writeText(pre.textContent ?? '');
+      message = button.dataset.copied ?? 'Copied';
+    } catch {
+      pre.hidden = false;
+      message = button.dataset.failed ?? 'Copy failed';
+    }
+    button.textContent = message;
+    const live = document.querySelector<HTMLElement>('[data-live]');
+    if (live) live.textContent = message;
+    clearTimeout(Number(button.dataset.timer));
+    button.dataset.timer = String(setTimeout(() => (button.textContent = button.dataset.label ?? ''), 2000));
+  });
+</script>
+
+<style>
+  .updated {
+    margin-top: 10px;
+    font-size: 0.75rem;
+    color: var(--fg-faint);
+  }
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 36px;
+  }
+
+  .filters[hidden] {
+    display: none;
+  }
+
+  .filter {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 12px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--bg-elev);
+    font-size: 0.8125rem;
+    color: var(--fg-muted);
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+  }
+
+  .filter span {
+    font-size: 0.75rem;
+    color: var(--fg-faint);
+  }
+
+  .filter:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .filter[aria-pressed='true'] {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: var(--accent-fg);
+  }
+
+  .filter[aria-pressed='true'] span {
+    color: inherit;
+  }
+
+  @media (forced-colors: active) {
+    .filter[aria-pressed='true'] {
+      outline: 2px solid CanvasText;
+      outline-offset: 2px;
+    }
+  }
+
+  .empty {
+    margin-bottom: 40px;
+    color: var(--fg-muted);
+  }
+
+  .pub-section {
+    padding-bottom: 48px;
+  }
+
+  .pub-section[hidden],
+  .year-group[hidden] {
+    display: none;
+  }
+
+  .year-group {
+    display: grid;
+    gap: 0 32px;
+    padding-top: 18px;
+  }
+
+  .year {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  @media (min-width: 760px) {
+    .year-group {
+      grid-template-columns: 72px 1fr;
+    }
+
+    .year {
+      position: sticky;
+      top: calc(var(--header-h) + 20px);
+      align-self: start;
+      padding-top: 20px;
+    }
+  }
+</style>

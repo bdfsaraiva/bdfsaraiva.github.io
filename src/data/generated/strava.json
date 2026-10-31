@@ -1,0 +1,20 @@
+{
+  "updatedAt": "2026-10-30T23:54:06.462Z",
+  "stats": {
+    "year": 2026,
+    "ytd": {
+      "count": 30,
+      "distanceKm": 1621,
+      "elevationM": 13713,
+      "movingHours": 68
+    },
+    "all": {
+      "count": 47,
+      "distanceKm": 2084,
+      "elevationM": 16588,
+      "movingHours": 99
+    },
+    "longestRideKm": 134,
+    "biggestClimbM": 381
+  }
+}

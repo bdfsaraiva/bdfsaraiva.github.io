@@ -1,0 +1,241 @@
+---
+import Icon from './Icon.astro';
+import { localizePath, otherLocale, stripLocale, t, type Locale } from '../i18n/ui';
+import { publicFileExists } from '../lib/data';
+import type { NavKey } from '../lib/types';
+
+interface Props {
+  locale: Locale;
+  active?: NavKey;
+  /** False on pages that only exist in one language (the 404). */
+  showLangSwitch?: boolean;
+}
+
+const { locale, active, showLangSwitch = true } = Astro.props;
+const nav: { key: Exclude<NavKey, 'home'> | 'hobbies'; path: string }[] = [
+  { key: 'publications', path: '/publications/' },
+  { key: 'work', path: '/work/' },
+  { key: 'teaching', path: '/teaching/' },
+  { key: 'hobbies', path: '/hobbies/' },
+];
+const alt = otherLocale(locale);
+const altHref = localizePath(stripLocale(Astro.url.pathname), alt);
+const hasCv = publicFileExists('cv.pdf');
+---
+
+<header class="site-header">
+  <div class="container bar">
+    <a class="brand mono" href={localizePath('/', locale)} aria-current={active === 'home' ? 'page' : undefined}>
+      <span class="brand-prompt" aria-hidden="true">~/</span>bdfsaraiva
+    </a>
+
+    <nav class="nav mono" aria-label={t(locale, 'nav.main')}>
+      <ul>
+        {
+          nav.map((item) => (
+            <li>
+              <a href={localizePath(item.path, locale)} aria-current={active === item.key ? 'page' : undefined}>
+                <span class="tilde" aria-hidden="true">~/</span>{t(locale, `nav.${item.key}`)}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="actions">
+      {
+        hasCv && (
+          <a class="action cv mono" href="/cv.pdf" download>
+            <Icon name="file" size={16} />
+            {t(locale, 'nav.cv')}
+          </a>
+        )
+      }
+      {
+        showLangSwitch && (
+          <a class="action mono" href={altHref} hreflang={alt} lang={alt} title={t(locale, 'lang.switch')}>
+            <span class="visually-hidden">{t(locale, 'lang.switch')}</span>
+            <span aria-hidden="true">{t(locale, 'lang.short')}</span>
+          </a>
+        )
+      }
+      <button class="action theme-toggle" type="button" data-theme-toggle aria-label={t(locale, 'theme.toggle')} title={t(locale, 'theme.toggle')}>
+        <Icon name="moon" size={17} class="icon-moon" />
+        <Icon name="sun" size={17} class="icon-sun" />
+      </button>
+    </div>
+  </div>
+</header>
+
+<script>
+  const root = document.documentElement;
+  document.querySelector('[data-theme-toggle]')?.addEventListener('click', () => {
+    const current = root.dataset.theme ?? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    const next = current === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    try {
+      localStorage.setItem('theme', next);
+    } catch {
+      /* storage unavailable: the choice lasts for this page only */
+    }
+  });
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    border-bottom: 1px solid var(--border);
+    background: color-mix(in srgb, var(--bg) 82%, transparent);
+    backdrop-filter: saturate(1.4) blur(10px);
+    -webkit-backdrop-filter: saturate(1.4) blur(10px);
+  }
+
+  .bar {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas: 'brand . actions' 'nav nav nav';
+    align-items: center;
+    column-gap: 16px;
+    padding-block: 10px 0;
+  }
+
+  .brand {
+    grid-area: brand;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    text-decoration: none;
+    letter-spacing: -0.01em;
+  }
+
+  .brand-prompt {
+    color: var(--accent);
+  }
+
+  .nav {
+    grid-area: nav;
+    margin-inline: calc(-1 * var(--gutter));
+    padding-inline: var(--gutter);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav ul {
+    display: flex;
+    gap: 4px;
+  }
+
+  .nav a {
+    display: inline-block;
+    padding: 10px 8px 11px;
+    font-size: 0.875rem;
+    color: var(--fg-muted);
+    text-decoration: none;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+  }
+
+  .nav .tilde {
+    color: var(--fg-faint);
+  }
+
+  .nav a:hover {
+    color: var(--fg);
+  }
+
+  /* The nav scrolls horizontally on small screens, which would clip an outside focus ring. */
+  .nav a:focus-visible {
+    outline-offset: -3px;
+  }
+
+  .nav a[aria-current='page'] {
+    color: var(--fg);
+    border-bottom-color: var(--accent);
+  }
+
+  .nav a[aria-current='page'] .tilde {
+    color: var(--accent);
+  }
+
+  .actions {
+    grid-area: actions;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-width: 36px;
+    height: 36px;
+    padding: 0 10px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--bg-elev);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--fg-muted);
+    text-decoration: none;
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease;
+  }
+
+  .action:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .theme-toggle {
+    padding: 0;
+  }
+
+  .theme-toggle :global(.icon-sun) {
+    display: none;
+  }
+
+  :global(:root[data-theme='dark']) .theme-toggle :global(.icon-sun) {
+    display: block;
+  }
+
+  :global(:root[data-theme='dark']) .theme-toggle :global(.icon-moon) {
+    display: none;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme='light'])) .theme-toggle :global(.icon-sun) {
+      display: block;
+    }
+
+    :global(:root:not([data-theme='light'])) .theme-toggle :global(.icon-moon) {
+      display: none;
+    }
+  }
+
+  @media (min-width: 860px) {
+    .bar {
+      grid-template-columns: auto 1fr auto;
+      grid-template-areas: 'brand nav actions';
+      padding-block: 0;
+      height: var(--header-h);
+    }
+
+    .nav {
+      margin: 0;
+      padding: 0;
+      justify-self: center;
+    }
+
+    .nav a {
+      padding-block: 19px 18px;
+    }
+  }
+</style>

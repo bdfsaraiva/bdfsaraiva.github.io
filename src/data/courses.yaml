@@ -1,0 +1,100 @@
+# Teaching page: one section per level, each sorted automatically (current courses first, newest first).
+# `level` is bsc, msc or postgrad (one section each). `from` is the first year taught; add `to` (last year) when you stop teaching a course —
+# without `to` the course is shown as current. Fields: name, institution, level, programmes, role, links.
+
+- id: aa2
+  name:
+    en: Machine Learning 2
+    pt: Aprendizagem Automatizada 2
+  institution: Universidade Lusófona
+  level: bsc
+  from: 2026
+  role: { en: Course leader, pt: Regente }
+
+- id: aa3
+  name:
+    en: Machine Learning 3
+    pt: Aprendizagem Automatizada 3
+  institution: Universidade Lusófona
+  level: bsc
+  from: 2025
+  role: { en: Course leader, pt: Regente }
+
+- id: taa
+  name:
+    en: Topics in Machine Learning and Its Applications
+    pt: Tópicos de Aprendizagem Automatizada e suas Aplicações
+  institution: Universidade Lusófona
+  level: msc
+  from: 2025
+  role: { en: Course leader, pt: Regente }
+
+- id: pg-crash-course
+  name: Programming Crash Course (Python)
+  institution: Universidade Lusófona
+  level: postgrad
+  programmes: ['Data Science Aplicada, Big Data e AI']
+  from: 2025
+  role: { en: Course leader, pt: Regente }
+  links:
+    - { label: { en: Materials, pt: Materiais }, url: 'https://github.com/bdfsaraiva/PG-python-crash-course' }
+
+- id: pg-data-science
+  name: Programming for Data Science — Analyzing & Visualizing Data
+  institution: Universidade Lusófona
+  level: postgrad
+  programmes: ['Data Science Aplicada, Big Data e AI']
+  from: 2025
+  role: { en: Course leader, pt: Regente }
+
+- id: aa1
+  name:
+    en: Machine Learning 1
+    pt: Aprendizagem Automatizada 1
+  institution: Universidade Lusófona
+  level: bsc
+  from: 2023
+  role: { en: Course leader, pt: Regente }
+  links:
+    - { label: { en: Student projects 2024/25, pt: Projetos 2024/25 }, url: 'https://github.com/bdfsaraiva/ML-projects-2024-25' }
+
+- id: lp-python
+  name:
+    en: Programming Languages (Python)
+    pt: Linguagens de Programação (Python)
+  institution: Universidade Lusófona
+  level: bsc
+  programmes: [LCID, LCMA]
+  from: 2023
+  role: { en: Course leader, pt: Regente }
+
+- id: fp
+  name:
+    en: Programming Fundamentals
+    pt: Fundamentos de Programação
+  institution: Universidade Lusófona
+  level: bsc
+  programmes: [LEI, LIG, LEIRT, LCID, LCMA]
+  from: 2019
+  role: { en: Lecturer, pt: Docente }
+
+- id: ia
+  name:
+    en: Artificial Intelligence
+    pt: Inteligência Artificial
+  institution: Universidade Lusófona
+  level: bsc
+  from: 2023
+  to: 2023
+  role: { en: Lecturer, pt: Docente }
+
+- id: aed
+  name:
+    en: Algorithms and Data Structures
+    pt: Algoritmia e Estruturas de Dados
+  institution: Universidade Lusófona
+  level: bsc
+  programmes: [LEI, LEIRT]
+  from: 2019
+  to: 2023
+  role: { en: Lecturer, pt: Docente }

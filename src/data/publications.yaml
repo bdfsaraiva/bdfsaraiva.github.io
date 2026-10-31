@@ -1,0 +1,34 @@
+# Configuration for scripts/fetch-publications.mjs.
+# Publications are pulled from OpenAlex every week; use this file only to correct them.
+# Work ids look like "W4387…" — run `npm run fetch:pubs` to print the id of every work.
+
+# OpenAlex sometimes splits one person into several author profiles: list them all.
+openalexAuthorIds:
+  - A5092252083 # Bruno D. Ferreira-Saraiva (linked to ORCID)
+  - A5125309068 # Bruno Saraiva (Zenodo deliverables)
+orcid: 0000-0001-8839-7222
+
+# Preprints whose published version has a different title: preprint id -> published id.
+# The preprint is then shown as a [Preprint] link on the published entry.
+merge:
+  W4384916256: W4388800948 # ParShift: SSRN preprint -> SoftwareX paper
+
+# Works to leave out entirely.
+hide: []
+
+# Force a type: journal | conference | software | preprint | chapter | book | report | other
+typeOverride:
+  W4389261146: conference # explicit replies: extended abstract at Complex Networks 2023 (arXiv copy in OpenAlex)
+
+# Correct metadata per work: title, venue, note and award (note/award accept { en, pt }).
+patch:
+  W4389261146:
+    venue: 12th International Conference on Complex Networks and their Applications (Complex Networks 2023)
+    note: { en: Extended abstract, pt: Resumo alargado }
+    award: { en: Best Poster Award, pt: Prémio de Melhor Poster }
+
+# Extra links per work, e.g.  W123: { code: https://github.com/…, slides: https://… }
+extraLinks: {}
+
+# Publications missing from OpenAlex, written by hand (same fields as generated/publications.json).
+add: []

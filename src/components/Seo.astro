@@ -1,0 +1,47 @@
+---
+import { htmlLang, stripLocale, type Locale } from '../i18n/ui';
+import { profile, publicFileExists } from '../lib/data';
+
+interface Props {
+  locale: Locale;
+  title: string;
+  description: string;
+  noindex?: boolean;
+}
+
+const { locale, title, description, noindex = false } = Astro.props;
+const site = Astro.site ?? new URL('https://bdfsaraiva.github.io');
+const neutralPath = stripLocale(Astro.url.pathname);
+const canonical = new URL(Astro.url.pathname, site).href;
+const enUrl = new URL(neutralPath, site).href;
+const ptUrl = new URL(`/pt${neutralPath}`, site).href;
+const ogImage = publicFileExists(profile.photo) ? new URL(profile.photo!, site).href : undefined;
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<meta name="author" content={profile.name} />
+{
+  noindex ? (
+    <meta name="robots" content="noindex" />
+  ) : (
+    <>
+      <link rel="canonical" href={canonical} />
+      <link rel="alternate" hreflang="en" href={enUrl} />
+      <link rel="alternate" hreflang="pt-PT" href={ptUrl} />
+      <link rel="alternate" hreflang="x-default" href={enUrl} />
+    </>
+  )
+}
+<link rel="sitemap" href="/sitemap-index.xml" />
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content={profile.name} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:locale" content={htmlLang(locale).replace('-', '_')} />
+{ogImage && <meta property="og:image" content={ogImage} />}
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />

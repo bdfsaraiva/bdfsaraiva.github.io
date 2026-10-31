@@ -1,0 +1,261 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import { formatDate, langStaticPaths, localeFromParam, localized, t } from '../../i18n/ui';
+import { github, profile, projects } from '../../lib/data';
+
+export const getStaticPaths = langStaticPaths;
+
+const locale = localeFromParam(Astro.params.lang);
+---
+
+<BaseLayout locale={locale} title={`${t(locale, 'work.title')} · ${profile.name}`} description={t(locale, 'work.description')} active="work">
+  <header class="container page-head">
+    <p class="path"><b>~/</b>{t(locale, 'nav.work')}</p>
+    <h1>{t(locale, 'work.title')}</h1>
+    <p class="lede">{t(locale, 'work.intro')}</p>
+  </header>
+
+  <section class="container stack-section" aria-labelledby="software-title">
+    <h2 class="section-label" id="software-title">{t(locale, 'work.software')}</h2>
+    <div class="card-grid">
+      {
+        projects.software.map((item, i) => {
+          const stats = item.repo ? github.repos[item.repo] : undefined;
+          return (
+            <article class="card software reveal" style={`--i: ${i}`}>
+              <header class="card-head">
+                <h3 class="mono">{item.name}</h3>
+                {stats && (
+                  <p class="repo-stats mono">
+                    <span class="stars">
+                      <Icon name="star" size={13} />
+                      <span aria-hidden="true">{stats.stars}</span>
+                      <span class="visually-hidden">{t(locale, stats.stars === 1 ? 'work.stars.one' : 'work.stars.other', { n: stats.stars })}</span>
+                    </span>
+                    {stats.language && <span>{stats.language}</span>}
+                    {stats.pushedAt && <span>{t(locale, 'work.updated', { date: formatDate(stats.pushedAt, locale) })}</span>}
+                  </p>
+                )}
+              </header>
+              <p class="tagline">{localized(item.tagline, locale)}</p>
+              <p class="description">{localized(item.description, locale)}</p>
+              {item.tags && (
+                <ul class="tags">
+                  {item.tags.map((tag) => (
+                    <li class="chip">{tag}</li>
+                  ))}
+                </ul>
+              )}
+              <div class="bracket-links card-links">
+                {item.repo && <a href={stats?.url ?? `https://github.com/${item.repo}`}>GitHub</a>}
+                {item.links?.map((link) => (
+                  <a href={link.url}>{localized(link.label, locale)}</a>
+                ))}
+              </div>
+            </article>
+          );
+        })
+      }
+    </div>
+  </section>
+
+  <section class="container stack-section" aria-labelledby="projects-title">
+    <h2 class="section-label" id="projects-title">{t(locale, 'work.projects')}</h2>
+    <div class="project-list">
+      {
+        projects.projects.map((item) => (
+          <article class="card project">
+            <div class="project-meta mono">
+              <span class="period">{item.period}</span>
+              {item.funder && <span>{localized(item.funder, locale)}</span>}
+            </div>
+            <div class="project-body">
+              <h3>
+                {item.name}
+                {item.fullName && <span class="full-name">{localized(item.fullName, locale)}</span>}
+              </h3>
+              <p class="role mono">{localized(item.role, locale)}</p>
+              <p class="description">{localized(item.description, locale)}</p>
+              {item.links && (
+                <div class="bracket-links">
+                  {item.links.map((link) => (
+                    <a href={link.url}>{localized(link.label, locale)}</a>
+                  ))}
+                </div>
+              )}
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  {
+    projects.service.length > 0 && (
+      <section class="container stack-section" aria-labelledby="service-title">
+        <h2 class="section-label" id="service-title">
+          {t(locale, 'work.service')}
+        </h2>
+        <ul class="service-list">
+          {projects.service.map((item) => (
+            <li>
+              <span class="service-year mono">{item.year}</span>
+              {/* One line on purpose: line breaks between these parts would render as stray spaces. */}
+              <p><strong>{localized(item.role, locale)}</strong>, {item.url ? <a href={item.url}>{localized(item.event, locale)}</a> : localized(item.event, locale)}{item.place && <span class="service-place">{` · ${localized(item.place, locale)}`}</span>}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+</BaseLayout>
+
+<style>
+  .card-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 4px 16px;
+  }
+
+  .card-head h3 {
+    font-size: 1.25rem;
+    letter-spacing: -0.01em;
+  }
+
+  .software::before {
+    content: '';
+    position: absolute;
+    inset: -1px -1px auto;
+    height: 3px;
+    border-radius: var(--radius) var(--radius) 0 0;
+    background: var(--accent);
+  }
+
+  .repo-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 12px;
+    font-size: 0.75rem;
+    color: var(--fg-muted);
+  }
+
+  .stars {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .stars :global(svg) {
+    color: #d29922;
+  }
+
+  .tagline {
+    font-weight: 500;
+  }
+
+  .description {
+    color: var(--fg-muted);
+    font-size: 0.9375rem;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .tags .chip {
+    font-size: 0.75rem;
+  }
+
+  .card-links {
+    margin-top: auto;
+    padding-top: 6px;
+  }
+
+  .project-list {
+    display: grid;
+    gap: 16px;
+  }
+
+  .project {
+    display: grid;
+    gap: 12px 32px;
+  }
+
+  .project-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 12px;
+    font-size: 0.8125rem;
+    color: var(--fg-muted);
+  }
+
+  .period {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .project-body {
+    display: grid;
+    gap: 8px;
+  }
+
+  .project h3 {
+    font-size: 1.25rem;
+  }
+
+  .full-name {
+    display: block;
+    margin-top: 4px;
+    font-size: 0.9375rem;
+    font-weight: 400;
+    color: var(--fg-muted);
+  }
+
+  .role {
+    font-size: 0.8125rem;
+  }
+
+  .service-list {
+    display: grid;
+  }
+
+  .service-list li {
+    display: grid;
+    gap: 2px 32px;
+    padding-block: 12px;
+    border-bottom: 1px dashed var(--border);
+  }
+
+  .service-list li:last-child {
+    border-bottom: 0;
+  }
+
+  .service-year {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .service-place {
+    color: var(--fg-muted);
+  }
+
+  @media (min-width: 760px) {
+    .service-list li {
+      grid-template-columns: 140px 1fr;
+    }
+
+    .project {
+      grid-template-columns: 140px 1fr;
+    }
+
+    .project-meta {
+      flex-direction: column;
+    }
+  }
+</style>
