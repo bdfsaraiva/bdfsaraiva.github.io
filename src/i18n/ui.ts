@@ -21,11 +21,11 @@ const en = {
   'lang.short': 'PT',
 
   'home.title': 'Home',
-  'home.whoami': 'whoami',
-  'home.interests': 'research interests',
+  'home.interests': 'Research interests',
+  'home.featured': 'Selected work',
+  'home.email': 'Send an email',
   'home.links': 'Links',
   'home.photoAlt': 'Portrait of {name}',
-  'home.index': 'Site index',
 
   'pubs.title': 'Publications',
   'pubs.description': 'Peer-reviewed papers, software, preprints and project deliverables by Bruno D. Ferreira-Saraiva.',
@@ -72,7 +72,7 @@ const en = {
 
   'teaching.title': 'Teaching',
   'teaching.description': 'Courses taught by Bruno D. Ferreira-Saraiva.',
-  'teaching.intro': 'Courses I teach or have taught, grouped by degree level. Courses taught in the current academic year are highlighted.',
+  'teaching.intro': 'Courses I teach or have taught at Universidade Lusófona, grouped by degree level. Courses taught in the current academic year are marked as current.',
   'teaching.level.bsc': "Bachelor's degrees",
   'teaching.level.msc': "Master's degrees",
   'teaching.level.postgrad': 'Postgraduate programmes',
@@ -136,11 +136,11 @@ const pt: Record<UiKey, string> = {
   'lang.short': 'EN',
 
   'home.title': 'Início',
-  'home.whoami': 'whoami',
-  'home.interests': 'interesses de investigação',
+  'home.interests': 'Interesses de investigação',
+  'home.featured': 'Trabalho em destaque',
+  'home.email': 'Enviar email',
   'home.links': 'Links',
   'home.photoAlt': 'Retrato de {name}',
-  'home.index': 'Índice do site',
 
   'pubs.title': 'Publicações',
   'pubs.description': 'Artigos com revisão por pares, software, preprints e entregáveis de projeto de Bruno D. Ferreira-Saraiva.',
@@ -187,7 +187,7 @@ const pt: Record<UiKey, string> = {
 
   'teaching.title': 'Ensino',
   'teaching.description': 'Unidades curriculares lecionadas por Bruno D. Ferreira-Saraiva.',
-  'teaching.intro': 'Unidades curriculares que leciono ou lecionei, agrupadas por ciclo de estudos. As do ano letivo em curso estão destacadas.',
+  'teaching.intro': 'Unidades curriculares que leciono ou lecionei na Universidade Lusófona, agrupadas por ciclo de estudos. As do ano letivo em curso estão assinaladas como atuais.',
   'teaching.level.bsc': 'Licenciaturas',
   'teaching.level.msc': 'Mestrados',
   'teaching.level.postgrad': 'Pós-graduações',

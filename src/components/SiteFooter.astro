@@ -2,13 +2,44 @@
 import { profile } from '../lib/data';
 
 const year = new Date().getFullYear();
+const links = [
+  { label: 'ORCID', url: profile.links.orcid },
+  { label: 'Google Scholar', url: profile.links.scholar },
+  { label: 'GitHub', url: profile.links.github },
+].filter((link) => link.url);
 ---
 
 <footer class="site-footer">
-  <div class="container inner mono">
+  <div class="container inner">
     <p>© {year} {profile.name}</p>
+    <ul class="footer-links">
+      {
+        profile.email && (
+          <li>
+            <a href="#" data-mail-user={profile.email.user} data-mail-domain={profile.email.domain}>
+              Email
+            </a>
+          </li>
+        )
+      }
+      {
+        links.map((link) => (
+          <li>
+            <a href={link.url} rel="me noopener">
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
   </div>
 </footer>
+
+<script>
+  for (const link of document.querySelectorAll<HTMLAnchorElement>('.site-footer [data-mail-user]')) {
+    link.href = `mailto:${link.dataset.mailUser}@${link.dataset.mailDomain}`;
+  }
+</script>
 
 <style>
   .site-footer {
@@ -18,8 +49,30 @@ const year = new Date().getFullYear();
   }
 
   .inner {
-    padding-block: 22px;
-    font-size: 0.8125rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px 24px;
+    padding-block: 16px;
+    font-size: 0.875rem;
     color: var(--fg-muted);
+  }
+
+  .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 20px;
+  }
+
+  .footer-links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    text-decoration: none;
+  }
+
+  .footer-links a:hover {
+    color: var(--accent);
   }
 </style>

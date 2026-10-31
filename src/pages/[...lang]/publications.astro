@@ -17,6 +17,8 @@ for (const pub of publications.items) counts.set(pub.type, (counts.get(pub.type)
 const filters = TYPE_ORDER.filter((type) => counts.has(type));
 
 const hasItems = publications.items.length > 0;
+// A type filter only earns its place on a long list; short lists read fine grouped by year.
+const showFilters = publications.items.length >= 12;
 ---
 
 <BaseLayout locale={locale} title={`${t(locale, 'pubs.title')} · ${profile.name}`} description={t(locale, 'pubs.description')} active="publications">
@@ -37,7 +39,7 @@ const hasItems = publications.items.length > 0;
     </p>
     {
       publications.updatedAt && (
-        <p class="updated mono">{t(locale, 'pubs.updated', { date: formatDate(publications.updatedAt, locale, { dateStyle: 'medium' }) })}</p>
+        <p class="updated">{t(locale, 'pubs.updated', { date: formatDate(publications.updatedAt, locale, { dateStyle: 'medium' }) })}</p>
       )
     }
   </header>
@@ -45,20 +47,20 @@ const hasItems = publications.items.length > 0;
   <div class="container">
     <p class="visually-hidden" aria-live="polite" data-live></p>
 
-    <div class="filters" role="group" aria-label={t(locale, 'pubs.filter')} data-filters hidden={true} data-enabled={hasItems ? '' : undefined}>
-      <button type="button" class="filter mono" data-filter="all" aria-pressed="true">
+    <div class="filters" role="group" aria-label={t(locale, 'pubs.filter')} data-filters hidden={true} data-enabled={showFilters ? '' : undefined}>
+      <button type="button" class="filter" data-filter="all" aria-pressed="true">
         {t(locale, 'pubs.all')} <span>{publications.items.length}</span>
       </button>
       {
         filters.map((type) => (
-          <button type="button" class="filter mono" data-filter={type} aria-pressed="false">
+          <button type="button" class="filter" data-filter={type} aria-pressed="false">
             {t(locale, `pubs.type.${type}`)} <span>{counts.get(type)}</span>
           </button>
         ))
       }
     </div>
 
-    <p class="empty mono" data-empty hidden={hasItems}>{t(locale, 'pubs.empty')}</p>
+    <p class="empty" data-empty hidden={hasItems}>{t(locale, 'pubs.empty')}</p>
 
     {
       [
@@ -66,23 +68,36 @@ const hasItems = publications.items.length > 0;
         { id: 'reports', label: t(locale, 'pubs.reports'), items: reports },
       ]
         .filter((section) => section.items.length > 0)
-        .map((section) => (
-          <section class="pub-section" data-section aria-labelledby={`${section.id}-title`}>
-            <h2 class="section-label" id={`${section.id}-title`}>
-              {section.label}
-            </h2>
-            {groupByYear(section.items).map(([year, items]) => (
-              <div class="year-group" data-year-group>
-                <h3 class="year mono">{year}</h3>
-                <ol class="pubs">
-                  {items.map((pub) => (
-                    <PublicationItem pub={pub} locale={locale} />
-                  ))}
-                </ol>
-              </div>
-            ))}
-          </section>
-        ))
+        .map((section) => {
+          const groups = groupByYear(section.items).map(([year, items]) => (
+            <div class="year-group" data-year-group>
+              <h3 class="year num">{year}</h3>
+              <ol class="pubs">
+                {items.map((pub) => (
+                  <PublicationItem pub={pub} locale={locale} />
+                ))}
+              </ol>
+            </div>
+          ));
+          // Project deliverables stay available but folded, so papers carry the page.
+          return section.id === 'reports' ? (
+            <details class="pub-section reports" data-section>
+              <summary>
+                <h2 class="section-label" id={`${section.id}-title`}>
+                  {section.label} <span class="count num">({section.items.length})</span>
+                </h2>
+              </summary>
+              {groups}
+            </details>
+          ) : (
+            <section class="pub-section" data-section aria-labelledby={`${section.id}-title`}>
+              <h2 class="section-label" id={`${section.id}-title`}>
+                {section.label}
+              </h2>
+              {groups}
+            </section>
+          );
+        })
     }
   </div>
 </BaseLayout>
@@ -194,6 +209,27 @@ const hasItems = publications.items.length > 0;
   .empty {
     margin-bottom: 40px;
     color: var(--fg-muted);
+  }
+
+  .reports summary {
+    width: fit-content;
+    cursor: pointer;
+    list-style-position: inside;
+  }
+
+  .reports summary h2 {
+    display: inline;
+  }
+
+  .reports .count {
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--fg-muted);
+  }
+
+  .reports[open] summary {
+    margin-bottom: 8px;
   }
 
   .pub-section {

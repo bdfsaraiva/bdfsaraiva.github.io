@@ -24,14 +24,17 @@ const locale = localeFromParam(Astro.params.lang);
           return (
             <article class="card software reveal" style={`--i: ${i}`}>
               <header class="card-head">
-                <h3 class="mono">{item.name}</h3>
+                <h3>{item.name}</h3>
                 {stats && (
-                  <p class="repo-stats mono">
-                    <span class="stars">
-                      <Icon name="star" size={13} />
-                      <span aria-hidden="true">{stats.stars}</span>
-                      <span class="visually-hidden">{t(locale, stats.stars === 1 ? 'work.stars.one' : 'work.stars.other', { n: stats.stars })}</span>
-                    </span>
+                  <p class="repo-stats">
+                    {/* Star counts below 5 read as a negative signal, so they are not shown. */}
+                    {stats.stars >= 5 && (
+                      <span class="stars">
+                        <Icon name="star" size={13} />
+                        <span aria-hidden="true">{stats.stars}</span>
+                        <span class="visually-hidden">{t(locale, stats.stars === 1 ? 'work.stars.one' : 'work.stars.other', { n: stats.stars })}</span>
+                      </span>
+                    )}
                     {stats.language && <span>{stats.language}</span>}
                     {stats.pushedAt && <span>{t(locale, 'work.updated', { date: formatDate(stats.pushedAt, locale) })}</span>}
                   </p>
@@ -46,7 +49,7 @@ const locale = localeFromParam(Astro.params.lang);
                   ))}
                 </ul>
               )}
-              <div class="bracket-links card-links">
+              <div class="link-row card-links">
                 {item.repo && <a href={stats?.url ?? `https://github.com/${item.repo}`}>GitHub</a>}
                 {item.links?.map((link) => (
                   <a href={link.url}>{localized(link.label, locale)}</a>
@@ -65,8 +68,8 @@ const locale = localeFromParam(Astro.params.lang);
       {
         projects.projects.map((item) => (
           <article class="card project">
-            <div class="project-meta mono">
-              <span class="period">{item.period}</span>
+            <div class="project-meta">
+              <span class="period num">{item.period}</span>
               {item.funder && <span>{localized(item.funder, locale)}</span>}
             </div>
             <div class="project-body">
@@ -74,10 +77,10 @@ const locale = localeFromParam(Astro.params.lang);
                 {item.name}
                 {item.fullName && <span class="full-name">{localized(item.fullName, locale)}</span>}
               </h3>
-              <p class="role mono">{localized(item.role, locale)}</p>
+              <p class="role">{localized(item.role, locale)}</p>
               <p class="description">{localized(item.description, locale)}</p>
               {item.links && (
-                <div class="bracket-links">
+                <div class="link-row">
                   {item.links.map((link) => (
                     <a href={link.url}>{localized(link.label, locale)}</a>
                   ))}
@@ -99,7 +102,7 @@ const locale = localeFromParam(Astro.params.lang);
         <ul class="service-list">
           {projects.service.map((item) => (
             <li>
-              <span class="service-year mono">{item.year}</span>
+              <span class="service-year num">{item.year}</span>
               {/* One line on purpose: line breaks between these parts would render as stray spaces. */}
               <p><strong>{localized(item.role, locale)}</strong>, {item.url ? <a href={item.url}>{localized(item.event, locale)}</a> : localized(item.event, locale)}{item.place && <span class="service-place">{` · ${localized(item.place, locale)}`}</span>}</p>
             </li>
@@ -124,20 +127,11 @@ const locale = localeFromParam(Astro.params.lang);
     letter-spacing: -0.01em;
   }
 
-  .software::before {
-    content: '';
-    position: absolute;
-    inset: -1px -1px auto;
-    height: 3px;
-    border-radius: var(--radius) var(--radius) 0 0;
-    background: var(--accent);
-  }
-
   .repo-stats {
     display: flex;
     flex-wrap: wrap;
     gap: 4px 12px;
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     color: var(--fg-muted);
   }
 
@@ -148,7 +142,7 @@ const locale = localeFromParam(Astro.params.lang);
   }
 
   .stars :global(svg) {
-    color: #d29922;
+    color: var(--pg);
   }
 
   .tagline {
@@ -156,6 +150,7 @@ const locale = localeFromParam(Astro.params.lang);
   }
 
   .description {
+    max-width: 65ch;
     color: var(--fg-muted);
     font-size: 0.9375rem;
   }

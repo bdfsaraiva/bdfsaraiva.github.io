@@ -6,8 +6,10 @@ import '@fontsource/barlow/500.css';
 import '@fontsource/barlow-condensed/600.css';
 import '@fontsource/barlow-condensed/800.css';
 
+import Icon from '../components/Icon.astro';
 import Seo from '../components/Seo.astro';
 import { htmlLang, localizePath, otherLocale, stripLocale, t, type Locale } from '../i18n/ui';
+import { profile } from '../lib/data';
 
 interface Props {
   locale: Locale;
@@ -24,7 +26,7 @@ const alt = otherLocale(locale);
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#0b0b0c" />
+    <meta name="theme-color" content="#111214" />
     <meta name="color-scheme" content="dark" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <Seo locale={locale} title={title} description={description} />
@@ -33,12 +35,20 @@ const alt = otherLocale(locale);
     <a class="hb-skip" href="#main">{t(locale, 'nav.skip')}</a>
     <header class="hb-top">
       <a class="hb-back" href={localizePath('/', locale)}>
-        <span aria-hidden="true">←</span> bdfsaraiva <span class="hb-back-label">/ {t(locale, 'hobbies.back')}</span>
+        <Icon name="arrow" size={16} class="hb-back-icon" />
+        {profile.name}
       </a>
-      <a class="hb-lang" href={localizePath(stripLocale(Astro.url.pathname), alt)} hreflang={alt} lang={alt} title={t(locale, 'lang.switch')}>
-        <span class="hb-sr">{t(locale, 'lang.switch')}</span>
-        <span aria-hidden="true">{t(locale, 'lang.short')}</span>
-      </a>
+      <nav class="hb-nav" aria-label={t(locale, 'nav.main')}>
+        {
+          (['publications', 'work', 'teaching'] as const).map((key) => (
+            <a href={localizePath(`/${key}/`, locale)}>{t(locale, `nav.${key}`)}</a>
+          ))
+        }
+        <a class="hb-lang" href={localizePath(stripLocale(Astro.url.pathname), alt)} hreflang={alt} lang={alt} title={t(locale, 'lang.switch')}>
+          <span class="hb-sr">{t(locale, 'lang.switch')}</span>
+          <span aria-hidden="true">{t(locale, 'lang.short')}</span>
+        </a>
+      </nav>
     </header>
     <main id="main" tabindex="-1">
       <slot />
@@ -176,17 +186,44 @@ const alt = otherLocale(locale);
     text-decoration: none;
   }
 
+  .hb-back,
+  .hb-nav a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+  }
+
   .hb-back:hover,
-  .hb-lang:hover {
+  .hb-nav a:hover {
     color: var(--hb-lime);
   }
 
-  .hb-back-label {
+  .hb-back-icon {
+    transform: rotate(180deg);
+  }
+
+  .hb-nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0 20px;
     color: var(--hb-muted);
   }
 
   .hb-lang {
-    padding: 4px 12px;
+    justify-content: center;
+    min-width: 44px;
+    padding: 0 12px;
     border: 1px solid var(--hb-line);
+    color: var(--hb-fg);
+  }
+
+  /* On phones the academic links would crowd the bar: keep the way back and the language switch. */
+  @media (max-width: 719px) {
+    .hb-nav a:not(.hb-lang) {
+      display: none;
+    }
   }
 </style>

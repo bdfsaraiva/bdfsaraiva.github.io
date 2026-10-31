@@ -33,9 +33,13 @@ export const projects: Projects = {
   service: (parsedProjects.service ?? []).toSorted((a, b) => b.year - a.year),
 };
 
+// Registries spell the owner's name differently ("Bruno Saraiva"); show it one way everywhere.
 export const publications: PublicationsData = {
   updatedAt: (publicationsJson as Partial<PublicationsData>).updatedAt ?? null,
-  items: (publicationsJson as Partial<PublicationsData>).items ?? [],
+  items: ((publicationsJson as Partial<PublicationsData>).items ?? []).map((pub) => ({
+    ...pub,
+    authors: pub.authors.map((author) => (author.me ? { ...author, name: profile.name } : author)),
+  })),
 };
 export const github: GithubData = {
   updatedAt: (githubJson as Partial<GithubData>).updatedAt ?? null,
@@ -46,8 +50,8 @@ export const strava = stravaJson as StravaData;
 /** A course without an end year is still being taught. */
 export const isCurrentCourse = (course: Course) => course.to == null;
 
-/** Full names of degree programmes, keyed by acronym (LEI, LCID…). */
-export const programmes = ((parse(programmesRaw) as Record<string, Localized> | null) ?? {});
+/** Degree programmes keyed by code (LEI, MCD…); `acronym` programmes are shown by their code. */
+export const programmes = (parse(programmesRaw) as Record<string, { acronym?: boolean; name: Localized }> | null) ?? {};
 
 /** Courses in the order written in courses.yaml (the order is chosen by hand). */
 export const courses = (parse(coursesRaw) as Course[] | null) ?? [];

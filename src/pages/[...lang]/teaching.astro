@@ -8,12 +8,12 @@ export const getStaticPaths = langStaticPaths;
 
 const locale = localeFromParam(Astro.params.lang);
 
-// One section per degree level; `courses` is already sorted, so each section keeps that order.
+// One section per degree level; courses keep the order written in courses.yaml.
 const LEVELS: CourseLevel[] = ['bsc', 'msc', 'postgrad'];
 const sections = LEVELS.map((level) => {
   const items = courses.filter((course) => course.level === level);
-  // Acronyms used in this section that have a known full name, in order of first appearance.
-  const acronyms = [...new Set(items.flatMap((course) => course.programmes ?? []))].filter((code) => programmes[code]);
+  // Acronyms used in this section, in order of first appearance, for the one-line key.
+  const acronyms = [...new Set(items.flatMap((course) => course.programmes ?? []))].filter((code) => programmes[code]?.acronym);
   return { level, items, acronyms };
 }).filter((section) => section.items.length > 0);
 
@@ -33,57 +33,59 @@ function period(course: Course): string {
   {
     sections.map((section) => (
       <section class={`container stack-section level-${section.level}`} aria-labelledby={`level-${section.level}`}>
-        <h2 class="section-label level-title" id={`level-${section.level}`}>
-          {t(locale, `teaching.level.${section.level}`)}
-        </h2>
-        {section.acronyms.length > 0 && (
-          <p class="legend">
-            {section.acronyms.map((code, i) => (
-              <span>{i > 0 && ' · '}<b>{code}</b> {localized(programmes[code], locale)}</span>
-            ))}
-          </p>
-        )}
-        <ul class="card-grid courses">
-          {section.items.map((course, i) => {
+        <div class="level-head">
+          <h2 class="section-label level-title" id={`level-${section.level}`}>
+            {t(locale, `teaching.level.${section.level}`)}
+          </h2>
+          {section.acronyms.length > 0 && (
+            <p class="legend">
+              {section.acronyms.map((code, i) => (
+                <span>
+                  {i > 0 && ' · '}
+                  <b>{code}</b> {localized(programmes[code].name, locale)}
+                </span>
+              ))}
+            </p>
+          )}
+        </div>
+
+        <ul class="courses">
+          {section.items.map((course) => {
             const current = isCurrentCourse(course);
             return (
-              <li class:list={['card', 'course', 'reveal', { current }]} style={`--i: ${i}`}>
-                <header class="course-head">
-                  <p class="institution mono">{course.institution}</p>
-                  {current && <span class="badge mono">{t(locale, 'teaching.current')}</span>}
-                </header>
-                <h3>{localized(course.name, locale)}</h3>
-                {course.programmes && course.programmes.length > 0 && (
-                  <ul class="programmes" aria-label={t(locale, 'teaching.programmes')}>
-                    {course.programmes.map((programme) => (
-                      <li class="chip">
-                        {programmes[programme] ? <abbr title={localized(programmes[programme], locale)}>{programme}</abbr> : programme}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-                <dl class="facts mono">
-                  <div>
-                    <dt>{t(locale, 'teaching.years')}</dt>
-                    <dd>{period(course)}</dd>
-                  </div>
-                  {course.role && (
-                    <div>
-                      <dt>{t(locale, 'teaching.role')}</dt>
-                      <dd>{localized(course.role, locale)}</dd>
-                    </div>
-                  )}
-                </dl>
-                <div class="course-actions">
-                  {course.syllabus ? (
-                    <a class="syllabus-btn mono" href={course.syllabus}>
+              <li class:list={['course', { past: !current }]}>
+                <div class="course-main">
+                  <h3>{localized(course.name, locale)}</h3>
+                  <p class="course-meta">
+                    {course.programmes && course.programmes.length > 0 && (
+                      <span class="programmes">
+                        {course.programmes.map((code, i) => {
+                          const programme = programmes[code];
+                          return (
+                            <>
+                              {i > 0 && ' · '}
+                              {programme?.acronym ? (
+                                <abbr title={localized(programme.name, locale)}>{code}</abbr>
+                              ) : programme ? (
+                                localized(programme.name, locale)
+                              ) : (
+                                code
+                              )}
+                            </>
+                          );
+                        })}
+                      </span>
+                    )}
+                    <span class="num">{period(course)}</span>
+                    {course.role && <span>{localized(course.role, locale)}</span>}
+                  </p>
+                </div>
+                <div class="course-side">
+                  {current && <span class="current-tag">{t(locale, 'teaching.current')}</span>}
+                  {course.syllabus && (
+                    <a class="syllabus" href={course.syllabus}>
                       {t(locale, 'teaching.syllabus')}
                     </a>
-                  ) : (
-                    <span class="syllabus-btn mono is-pending" aria-disabled="true" title={t(locale, 'teaching.soon')}>
-                      {t(locale, 'teaching.syllabus')}
-                      <span class="visually-hidden"> ({t(locale, 'teaching.soon')})</span>
-                    </span>
                   )}
                 </div>
               </li>
@@ -99,95 +101,39 @@ function period(course: Course): string {
   /* Each degree level has its own colour: BSc the site accent, MSc violet, postgraduate amber. */
   .level-bsc {
     --level: var(--accent);
-    --level-soft: var(--accent-soft);
-    --level-fg: var(--accent-fg);
   }
 
   .level-msc {
     --level: var(--msc);
-    --level-soft: var(--msc-soft);
-    --level-fg: var(--msc-fg);
   }
 
   .level-postgrad {
     --level: var(--pg);
-    --level-soft: var(--pg-soft);
-    --level-fg: var(--pg-fg);
   }
 
-  /* Every card carries its level colour on the left edge. */
-  .course::before {
-    content: '';
-    position: absolute;
-    inset: 14px auto 14px -1px;
-    width: 3px;
-    border-radius: 0 3px 3px 0;
-    background: var(--level);
-  }
-
-  .course-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-  }
-
-  .institution {
-    font-size: 0.75rem;
-    color: var(--fg-muted);
-  }
-
-  .course h3 {
-    font-size: 1.1875rem;
-  }
-
-  .programmes {
-    display: flex;
-    flex-wrap: wrap;
+  .level-head {
+    display: grid;
     gap: 6px;
   }
 
-  .programmes .chip {
-    padding: 1px 8px;
-    font-size: 0.75rem;
-    font-weight: 500;
-    color: var(--fg);
-  }
-
-  .facts {
-    display: grid;
-    gap: 4px;
-    margin: 0;
-    font-size: 0.8125rem;
-  }
-
-  .facts div {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0 8px;
-  }
-
-  .facts dt {
-    color: var(--fg-faint);
-  }
-
-  .facts dt::after {
-    content: ':';
-  }
-
-  .facts dd {
-    margin: 0;
-  }
-
-  /* Group subtitle takes the level colour ("// Licenciaturas"). */
   .level-title {
-    color: var(--fg);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .level-title::before {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    background: var(--level);
   }
 
   /* One-line key for the programme acronyms used in the section. */
   .legend {
-    margin-top: -8px;
-    font-size: 0.8125rem;
+    max-width: 75ch;
+    font-size: 0.875rem;
     line-height: 1.7;
     color: var(--fg-muted);
   }
@@ -197,70 +143,89 @@ function period(course: Course): string {
     color: var(--fg);
   }
 
+  .courses {
+    border-top: 1px solid var(--border);
+  }
+
+  .course {
+    display: grid;
+    gap: 6px 24px;
+    padding-block: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .course h3 {
+    font-size: 1.0625rem;
+    font-weight: 600;
+  }
+
+  .course-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px 0;
+    margin-top: 4px;
+    font-size: 0.9375rem;
+    color: var(--fg-muted);
+  }
+
+  .course-meta > span + span::before {
+    content: '·';
+    margin-inline: 8px;
+    color: var(--fg-faint);
+  }
+
   .programmes abbr {
     text-decoration: none;
     cursor: help;
   }
 
-  .level-title::before {
-    background: var(--level);
-  }
-
-  .course-actions {
-    margin-top: auto;
-    padding-top: 6px;
-  }
-
-  .syllabus-btn {
-    display: inline-flex;
-    align-items: center;
-    padding: 5px 12px;
-    border: 1px solid var(--level);
-    border-radius: var(--radius-sm);
-    font-size: 0.75rem;
-    font-weight: 500;
-    color: var(--level);
-    text-decoration: none;
-    transition: background 0.15s ease, color 0.15s ease;
-  }
-
-  a.syllabus-btn:hover {
-    background: var(--level);
-    color: var(--level-fg);
-  }
-
-  .syllabus-btn.is-pending {
-    border-style: dashed;
-    border-color: var(--border-strong);
+  /* Courses no longer taught recede; current ones keep full contrast. */
+  .past h3 {
     color: var(--fg-muted);
-    cursor: default;
+    font-weight: 500;
   }
 
-  /* Courses currently taught: frame and tinted background in the level colour, plus a "Current" badge. */
-  .current {
-    border-color: color-mix(in srgb, var(--level) 55%, var(--border));
-    background: linear-gradient(180deg, var(--level-soft), var(--bg-elev) 70%);
+  .course-side {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 20px;
   }
 
-  .badge {
+  .current-tag {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 2px 9px;
-    border-radius: 999px;
-    background: var(--level);
-    color: var(--level-fg);
-    font-size: 0.6875rem;
+    font-size: 0.875rem;
     font-weight: 600;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
+    color: var(--level);
   }
 
-  .badge::before {
+  .current-tag::before {
     content: '';
-    width: 6px;
-    height: 6px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
     background: currentColor;
+  }
+
+  .syllabus {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--accent);
+  }
+
+  @media (min-width: 760px) {
+    .course {
+      grid-template-columns: 1fr auto;
+      align-items: center;
+    }
+
+    .course-side {
+      justify-content: flex-end;
+    }
   }
 </style>

@@ -22,6 +22,7 @@ export interface Profile {
     institutional?: string;
   };
   interests: Localized[];
+  featured?: { title: string; meta: Localized; url?: string; path?: string }[];
 }
 
 export type PubType = 'journal' | 'conference' | 'software' | 'preprint' | 'chapter' | 'book' | 'report' | 'other';

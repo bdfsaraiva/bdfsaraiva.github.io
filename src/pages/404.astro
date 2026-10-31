@@ -6,17 +6,17 @@ import { profile } from '../lib/data';
 
 <BaseLayout locale="en" title={`404 · ${profile.name}`} description={t('en', '404.text')} noindex>
   <section class="container not-found">
-    <p class="code mono" aria-hidden="true">404</p>
+    <p class="code" aria-hidden="true">404</p>
     <div class="langs">
       <div lang="en">
         <h1>{t('en', '404.title')}</h1>
         <p>{t('en', '404.text')}</p>
-        <p class="mono"><a href={localizePath('/', 'en')}>cd ~ → {t('en', '404.back')}</a></p>
+        <p><a href={localizePath('/', 'en')}>{t('en', '404.back')}</a></p>
       </div>
       <div lang="pt-PT">
         <h2>{t('pt', '404.title')}</h2>
         <p>{t('pt', '404.text')}</p>
-        <p class="mono"><a href={localizePath('/', 'pt')}>cd ~ → {t('pt', '404.back')}</a></p>
+        <p><a href={localizePath('/', 'pt')}>{t('pt', '404.back')}</a></p>
       </div>
     </div>
   </section>

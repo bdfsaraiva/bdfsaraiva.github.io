@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Icon from '../../components/Icon.astro';
-import { langStaticPaths, localeFromParam, localized, t } from '../../i18n/ui';
+import { langStaticPaths, localeFromParam, localizePath, localized, t } from '../../i18n/ui';
 import { profile, publicFileExists } from '../../lib/data';
 
 export const getStaticPaths = langStaticPaths;
@@ -12,12 +12,12 @@ const hasPhoto = publicFileExists(profile.photo);
 const nameParts = profile.name.split(/[\s-]+/);
 const initials = `${nameParts[0]?.[0] ?? ''}${nameParts.at(-1)?.[0] ?? ''}`;
 
-const linkButtons = [
-  { key: 'scholar', label: 'Google Scholar', icon: 'scholar', url: profile.links.scholar },
-  { key: 'orcid', label: 'ORCID', icon: 'orcid', url: profile.links.orcid },
-  { key: 'github', label: 'GitHub', icon: 'github', url: profile.links.github },
-  { key: 'linkedin', label: 'LinkedIn', icon: 'linkedin', url: profile.links.linkedin },
-  { key: 'institutional', label: 'Lusófona', icon: 'building', url: profile.links.institutional },
+const profileLinks = [
+  { label: 'Google Scholar', icon: 'scholar', url: profile.links.scholar },
+  { label: 'ORCID', icon: 'orcid', url: profile.links.orcid },
+  { label: 'GitHub', icon: 'github', url: profile.links.github },
+  { label: 'LinkedIn', icon: 'linkedin', url: profile.links.linkedin },
+  { label: 'Lusófona', icon: 'building', url: profile.links.institutional },
 ] as const;
 ---
 
@@ -43,34 +43,31 @@ const linkButtons = [
         {localized(profile.affiliation, locale)}
       </p>
 
-      <div class="bio">
-        {profile.bio.map((paragraph) => <p>{localized(paragraph, locale)}</p>)}
-      </div>
-
-      <ul class="links" aria-label={t(locale, 'home.links')}>
-        {
-          linkButtons
-            .filter((link) => link.url)
-            .map((link) => (
-              <li>
-                <a class="link-btn" href={link.url} rel="me noopener">
-                  <Icon name={link.icon} size={15} />
-                  <span>{link.label}</span>
-                </a>
-              </li>
-            ))
-        }
+      <!-- Contact first: one primary action, the profiles as quiet links. -->
+      <div class="contact">
         {
           profile.email && (
-            <li>
-              <a class="link-btn" href="#" data-mail-user={profile.email.user} data-mail-domain={profile.email.domain}>
-                <Icon name="mail" size={15} />
-                <span>Email</span>
-              </a>
-            </li>
+            <a class="email-btn" href="#" data-mail-user={profile.email.user} data-mail-domain={profile.email.domain}>
+              <Icon name="mail" size={16} />
+              <span>{t(locale, 'home.email')}</span>
+            </a>
           )
         }
-      </ul>
+        <ul class="profile-links" aria-label={t(locale, 'home.links')}>
+          {
+            profileLinks
+              .filter((link) => link.url)
+              .map((link) => (
+                <li>
+                  <a href={link.url} rel="me noopener">
+                    <Icon name={link.icon} size={15} />
+                    {link.label}
+                  </a>
+                </li>
+              ))
+          }
+        </ul>
+      </div>
       {
         profile.email && (
           <noscript>
@@ -80,8 +77,30 @@ const linkButtons = [
           </noscript>
         )
       }
+
+      <div class="bio">
+        {profile.bio.map((paragraph) => <p>{localized(paragraph, locale)}</p>)}
+      </div>
     </div>
   </section>
+
+  {
+    profile.featured && profile.featured.length > 0 && (
+      <section class="container block" aria-labelledby="featured-title">
+        <h2 class="section-label" id="featured-title">
+          {t(locale, 'home.featured')}
+        </h2>
+        <ul class="featured">
+          {profile.featured.map((item) => (
+            <li>
+              <a href={item.path ? localizePath(item.path, locale) : item.url}>{item.title}</a>
+              <p>{localized(item.meta, locale)}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
 
   <section class="container block" aria-labelledby="interests-title">
     <h2 class="section-label" id="interests-title">{t(locale, 'home.interests')}</h2>
@@ -100,15 +119,13 @@ const linkButtons = [
 <style>
   .hero {
     display: grid;
-    gap: 32px;
-    padding-block: clamp(40px, 8vw, 88px) 40px;
+    gap: 28px;
+    padding-block: clamp(40px, 8vw, 88px) 48px;
   }
 
   .name {
-    font-size: clamp(2rem, 5vw, 2.9rem);
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
+    font-size: clamp(2.25rem, 5.5vw, 3.25rem);
+    line-height: 1.08;
   }
 
   .role {
@@ -122,38 +139,51 @@ const linkButtons = [
     color: var(--fg-faint);
   }
 
-  .bio {
-    display: grid;
-    gap: 14px;
-    max-width: 66ch;
-    margin-top: 24px;
-    font-size: 1.0625rem;
-  }
-
-  .links {
+  .contact {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 28px;
+    align-items: center;
+    gap: 12px 24px;
+    margin-top: 24px;
   }
 
-  .link-btn {
+  .email-btn {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: 7px 13px;
-    border: 1px solid var(--border);
+    min-height: 44px;
+    padding: 0 18px;
     border-radius: var(--radius-sm);
-    background: var(--bg-elev);
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: var(--fg);
+    background: var(--accent);
+    color: var(--accent-fg);
+    font-weight: 600;
     text-decoration: none;
-    transition: border-color 0.15s ease, color 0.15s ease;
+    transition: background 0.15s ease;
   }
 
-  .link-btn:hover {
-    border-color: var(--accent);
+  .email-btn:hover {
+    background: var(--accent-strong);
+    color: var(--accent-fg);
+  }
+
+  .profile-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 18px;
+  }
+
+  .profile-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 44px;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--fg-muted);
+    text-decoration: none;
+  }
+
+  .profile-links a:hover {
     color: var(--accent);
   }
 
@@ -161,6 +191,14 @@ const linkButtons = [
     margin-top: 10px;
     font-size: 0.875rem;
     color: var(--fg-muted);
+  }
+
+  .bio {
+    display: grid;
+    gap: 14px;
+    max-width: 60ch;
+    margin-top: 28px;
+    font-size: 1.0625rem;
   }
 
   /* The source photo is already round: show it as a circle so the grey corners disappear. */
@@ -178,27 +216,57 @@ const linkButtons = [
     border-radius: 50%;
     object-fit: cover;
     border: 1px solid var(--border);
-    box-shadow: 0 0 0 6px var(--bg-elev), 0 0 0 7px var(--border);
   }
 
   .monogram {
     display: grid;
     place-items: center;
     background: var(--bg-sunken);
+    font-family: var(--font-serif);
     font-size: clamp(2.5rem, 8vw, 4rem);
     font-weight: 600;
     color: var(--accent);
   }
 
   .block {
+    display: grid;
+    gap: 16px;
     padding-bottom: 48px;
+  }
+
+  .featured {
+    display: grid;
+    max-width: 72ch;
+  }
+
+  .featured li {
+    padding-block: 14px;
+    border-top: 1px solid var(--border);
+  }
+
+  .featured li:last-child {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .featured a {
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .featured a:hover {
+    text-decoration: underline;
+  }
+
+  .featured p {
+    margin-top: 2px;
+    font-size: 0.9375rem;
+    color: var(--fg-muted);
   }
 
   .interests {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    margin-top: 16px;
   }
 
   .interests .chip {

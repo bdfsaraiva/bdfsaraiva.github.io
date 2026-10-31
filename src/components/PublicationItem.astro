@@ -28,19 +28,11 @@ const citationsKey = pub.citations === 1 ? 'pubs.citations.one' : 'pubs.citation
 ---
 
 <li class="pub" data-type={pub.type}>
-  <p class="meta mono">
-    <span class={`badge badge-${pub.type}`}>{t(locale, `pubs.type.${pub.type}`)}</span>
-    {
-      pub.award && (
-        <span class="award">
-          <Icon name="star" size={11} />
-          {localized(pub.award, locale)}
-        </span>
-      )
-    }
+  <p class="meta">
+    <span class="type">{t(locale, `pubs.type.${pub.type}`)}</span>
     {pub.venue && <span class="venue">{pub.venue}</span>}
-    {pub.note && <span class="note">{localized(pub.note, locale)}</span>}
-    {pub.citations > 0 && <span class="citations">{t(locale, citationsKey, { n: pub.citations })}</span>}
+    {pub.note && <span>{localized(pub.note, locale)}</span>}
+    {pub.citations > 0 && <span class="num">{t(locale, citationsKey, { n: pub.citations })}</span>}
   </p>
 
   <h4 class="title">
@@ -53,7 +45,16 @@ const citationsKey = pub.citations === 1 ? 'pubs.citations.one' : 'pubs.citation
     {hidden > 0 && <span class="et-al"> {t(locale, 'pubs.etAl')} (+{hidden})</span>}
   </p>
 
-  <div class="bracket-links actions">
+  {
+    pub.award && (
+      <p class="award">
+        <Icon name="star" size={14} />
+        {localized(pub.award, locale)}
+      </p>
+    )
+  }
+
+  <div class="link-row actions">
     {links.map((link) => <a href={link.url}>{t(locale, `pubs.link.${link.key}`)}</a>)}
     {
       pub.bibtex && (
@@ -65,7 +66,7 @@ const citationsKey = pub.citations === 1 ? 'pubs.citations.one' : 'pubs.citation
   {
     pub.abstract && (
       <details class="abstract">
-        <summary class="mono">{t(locale, 'pubs.abstract')}</summary>
+        <summary>{t(locale, 'pubs.abstract')}</summary>
         <p>{pub.abstract}</p>
       </details>
     )
@@ -79,20 +80,30 @@ const citationsKey = pub.citations === 1 ? 'pubs.citations.one' : 'pubs.citation
     display: grid;
     gap: 6px;
     padding: 18px 0 20px;
-    border-bottom: 1px dashed var(--border);
+    border-bottom: 1px solid var(--border);
   }
 
   .pub:last-child {
     border-bottom: 0;
   }
 
+  /* "Journal · Future Internet · 10 citations" */
   .meta {
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
-    gap: 4px 12px;
-    font-size: 0.75rem;
+    font-size: 0.875rem;
     color: var(--fg-muted);
+  }
+
+  .meta > span + span::before {
+    content: '·';
+    margin-inline: 8px;
+    color: var(--fg-faint);
+  }
+
+  .type {
+    font-weight: 600;
+    color: var(--accent);
   }
 
   .venue {
@@ -103,45 +114,11 @@ const citationsKey = pub.citations === 1 ? 'pubs.citations.one' : 'pubs.citation
   .award {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
-    padding: 1px 8px;
-    border: 1px solid color-mix(in srgb, var(--pg) 55%, transparent);
-    border-radius: 4px;
-    background: var(--pg-soft);
+    gap: 6px;
+    width: fit-content;
+    font-size: 0.9375rem;
+    font-weight: 600;
     color: var(--pg);
-    font-size: 0.6875rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-  }
-
-  .note::before {
-    content: '· ';
-    color: var(--fg-faint);
-  }
-
-  .citations::before {
-    content: '↳ ';
-    color: var(--fg-faint);
-  }
-
-  .badge {
-    padding: 1px 8px;
-    border: 1px solid var(--border-strong);
-    border-radius: 4px;
-    font-size: 0.6875rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: var(--fg-muted);
-  }
-
-  .badge-journal,
-  .badge-conference,
-  .badge-software {
-    border-color: color-mix(in srgb, var(--accent) 45%, transparent);
-    background: var(--accent-soft);
-    color: var(--accent-strong);
   }
 
   .title {

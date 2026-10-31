@@ -54,13 +54,13 @@ const hasCv = publicFileExists('cv.pdf');
       }
       {
         showLangSwitch && (
-          <a class="action mono" href={altHref} hreflang={alt} lang={alt} title={t(locale, 'lang.switch')}>
+          <a class="action" href={altHref} hreflang={alt} lang={alt} title={t(locale, 'lang.switch')}>
             <span class="visually-hidden">{t(locale, 'lang.switch')}</span>
             <span aria-hidden="true">{t(locale, 'lang.short')}</span>
           </a>
         )
       }
-      <button class="action theme-toggle" type="button" data-theme-toggle aria-label={t(locale, 'theme.toggle')} title={t(locale, 'theme.toggle')}>
+      <button class="action theme-toggle" type="button" data-theme-toggle aria-pressed="false" aria-label={t(locale, 'theme.toggle')} title={t(locale, 'theme.toggle')}>
         <Icon name="moon" size={17} class="icon-moon" />
         <Icon name="sun" size={17} class="icon-sun" />
       </button>
@@ -70,10 +70,15 @@ const hasCv = publicFileExists('cv.pdf');
 
 <script>
   const root = document.documentElement;
-  document.querySelector('[data-theme-toggle]')?.addEventListener('click', () => {
-    const current = root.dataset.theme ?? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    const next = current === 'dark' ? 'light' : 'dark';
+  const toggle = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
+  const effectiveTheme = () => root.dataset.theme ?? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  // "Pressed" means dark mode is on, so screen readers hear the current state.
+  const syncPressed = () => toggle?.setAttribute('aria-pressed', String(effectiveTheme() === 'dark'));
+  syncPressed();
+  toggle?.addEventListener('click', () => {
+    const next = effectiveTheme() === 'dark' ? 'light' : 'dark';
     root.dataset.theme = next;
+    syncPressed();
     try {
       localStorage.setItem('theme', next);
     } catch {
@@ -168,8 +173,8 @@ const hasCv = publicFileExists('cv.pdf');
     align-items: center;
     justify-content: center;
     gap: 6px;
-    min-width: 36px;
-    height: 36px;
+    min-width: 44px;
+    height: 44px;
     padding: 0 10px;
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);

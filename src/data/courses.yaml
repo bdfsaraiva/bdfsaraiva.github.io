@@ -84,7 +84,7 @@
     pt: Tópicos de Aprendizagem Automatizada e suas Aplicações
   institution: Universidade Lusófona
   level: msc
-  programmes: [Ciência de Dados]
+  programmes: [MCD]
   from: 2025
   role: { en: Course leader, pt: Regente }
 
@@ -94,7 +94,7 @@
     pt: Princípios de Inteligência Artificial e Aprendizagem Automatizada
   institution: Universidade Lusófona
   level: msc
-  programmes: [Inteligência Artificial Aplicada e Computação]
+  programmes: [MIAAC]
   from: 2026
   role: { en: Course leader, pt: Regente }
 
@@ -103,7 +103,7 @@
   name: Programming Crash Course (Python)
   institution: Universidade Lusófona
   level: postgrad
-  programmes: ['Data Science Aplicada, Big Data e AI']
+  programmes: [PGDSA]
   from: 2025
   role: { en: Course leader, pt: Regente }
 
@@ -111,6 +111,6 @@
   name: Programming for Data Science — Analyzing & Visualizing Data
   institution: Universidade Lusófona
   level: postgrad
-  programmes: ['Data Science Aplicada, Big Data e AI']
+  programmes: [PGDSA]
   from: 2025
   role: { en: Course leader, pt: Regente }

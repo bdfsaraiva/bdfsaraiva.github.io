@@ -60,6 +60,24 @@ bio:
       cinematográfica em conhecimento preditivo e explicativo de apoio à produção de cinema em pequenos
       países europeus.
 
+# Home page "Selected work": `url` for external links, `path` for pages of this site.
+featured:
+  - title: ParShift
+    meta:
+      en: Python package for participation shifts in group conversations · SoftwareX, 2023
+      pt: Pacote Python para mudanças de participação em conversas de grupo · SoftwareX, 2023
+    url: https://doi.org/10.1016/j.softx.2023.101554
+  - title: Use of explicit replies as coordination mechanisms in online student debate
+    meta:
+      en: Complex Networks 2023 · Best Poster Award
+      pt: Complex Networks 2023 · Prémio de Melhor Poster
+    url: https://doi.org/10.48550/arxiv.2311.18466
+  - title: CresCine
+    meta:
+      en: EU-funded project on audience data for small European film markets
+      pt: Projeto europeu sobre dados de audiências para pequenos mercados de cinema
+    path: /work/
+
 interests:
   # Technical terms such as NLP and LLMs stay in English in both languages.
   - Natural Language Processing (NLP)

@@ -24,6 +24,7 @@
   --pg-fg: #ffffff;
 
   --font-sans: 'IBM Plex Sans Variable', 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-serif: 'Source Serif 4 Variable', 'Source Serif 4', Georgia, 'Times New Roman', serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
 
   --radius: 10px;
@@ -104,6 +105,9 @@ html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
   scroll-padding-top: calc(var(--header-h) + 16px);
+  scrollbar-color: var(--border-strong) var(--bg);
+  accent-color: var(--accent);
+  caret-color: var(--accent);
 }
 
 body {
@@ -139,6 +143,17 @@ h4 {
   line-height: 1.2;
   font-weight: 600;
   text-wrap: balance;
+}
+
+h1,
+h2 {
+  font-family: var(--font-serif);
+  letter-spacing: -0.01em;
+}
+
+/* Years, dates and counts line up in columns. */
+.num {
+  font-variant-numeric: tabular-nums;
 }
 
 p {
@@ -212,7 +227,6 @@ button {
   padding: 8px 14px;
   background: var(--accent);
   color: var(--accent-fg);
-  font-family: var(--font-mono);
   font-size: 0.875rem;
   border-radius: var(--radius-sm);
   text-decoration: none;
@@ -226,14 +240,12 @@ main {
   flex: 1;
 }
 
-/* Page heading: a terminal path followed by the human title. */
 .page-head {
-  padding-block: clamp(40px, 8vw, 72px) 28px;
+  padding-block: clamp(40px, 8vw, 72px) 32px;
 }
 
 .page-head h1 {
-  font-size: clamp(2rem, 5vw, 2.6rem);
-  letter-spacing: -0.02em;
+  font-size: clamp(2.25rem, 5vw, 3rem);
 }
 
 .page-head .lede {
@@ -242,80 +254,49 @@ main {
   color: var(--fg-muted);
 }
 
+/* Section heading: a quiet serif title, sentence case. */
 .section-label {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-family: var(--font-sans);
-  font-size: 0.8125rem;
+  font-size: 1.375rem;
   font-weight: 600;
-  letter-spacing: 0.08em;
-  color: var(--fg-muted);
-  text-transform: uppercase;
+  color: var(--fg);
 }
 
-.section-label::before {
-  content: '';
-  width: 18px;
-  height: 2px;
-  border-radius: 2px;
-  background: var(--accent);
-}
-
-.section-label::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: var(--border);
-}
-
-/* Bracketed mono links: [DOI] [PDF] … */
-.bracket-links {
+/* A row of plain text links: DOI · PDF · BibTeX. */
+.link-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px 14px;
-  font-family: var(--font-mono);
-  font-size: 0.8125rem;
+  gap: 0 20px;
+  font-size: 0.875rem;
 }
 
-.bracket-links a,
-.bracket-links button {
+.link-row a,
+.link-row button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
   padding: 0;
   border: 0;
   background: none;
   color: var(--accent);
-  text-decoration: none;
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--accent) 35%, transparent);
   cursor: pointer;
 }
 
-.bracket-links a::before,
-.bracket-links button::before {
-  content: '[';
-  color: var(--fg-faint);
-}
-
-.bracket-links a::after,
-.bracket-links button::after {
-  content: ']';
-  color: var(--fg-faint);
-}
-
-.bracket-links a:hover,
-.bracket-links button:hover {
+.link-row a:hover,
+.link-row button:hover {
   color: var(--accent-strong);
-  text-decoration: underline;
-  text-underline-offset: 3px;
+  text-decoration-color: currentColor;
 }
 
+/* Small tag: tinted, no outline. */
 .chip {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 3px 10px;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background: var(--bg-elev);
-  font-family: var(--font-mono);
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: var(--bg-sunken);
   font-size: 0.8125rem;
   line-height: 1.5;
   color: var(--fg-muted);
@@ -349,18 +330,4 @@ main {
   display: grid;
   gap: 20px;
   padding-bottom: 56px;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .reveal {
-    animation: reveal 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
-    animation-delay: calc(var(--i, 0) * 70ms);
-  }
-}
-
-@keyframes reveal {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
 }

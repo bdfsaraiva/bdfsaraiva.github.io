@@ -1,5 +1,6 @@
 ---
 import HobbiesLayout from '../../layouts/HobbiesLayout.astro';
+import Icon from '../../components/Icon.astro';
 import { formatDate, htmlLang, langStaticPaths, localeFromParam, localized, t } from '../../i18n/ui';
 import { hobbies, profile, publicFileExists, strava } from '../../lib/data';
 
@@ -32,7 +33,6 @@ const padelPhoto = publicFileExists(padel.photo) ? padel.photo : undefined;
 
 <HobbiesLayout locale={locale} title={`${t(locale, 'hobbies.title')} · ${profile.name}`} description={t(locale, 'hobbies.description')}>
   <section class="hero">
-    <p class="kicker">bdfsaraiva <span>/</span> {t(locale, 'hobbies.kicker')}</p>
     <h1 class="title">
       <span class="outline">{t(locale, 'hobbies.heading1')}</span>
       <span class="solid">{t(locale, 'hobbies.heading2')}</span>
@@ -85,7 +85,6 @@ const padelPhoto = publicFileExists(padel.photo) ? padel.photo : undefined;
 
   <section class="band football" aria-labelledby="football-title">
     <div class="band-head">
-      <span class="index">01</span>
       <h2 id="football-title">{t(locale, 'hobbies.football')}</h2>
       <span class="scoreboard" aria-hidden="true">FT · 2021</span>
     </div>
@@ -123,7 +122,7 @@ const padelPhoto = publicFileExists(padel.photo) ? padel.photo : undefined;
       {
         football.profileUrl && (
           <a class="arrow-link" href={football.profileUrl} rel="noopener">
-            {t(locale, 'hobbies.career')} <span aria-hidden="true">↗</span>
+            {t(locale, 'hobbies.career')} <Icon name="arrow" size={16} class="arrow-out" />
           </a>
         )
       }
@@ -140,7 +139,6 @@ const padelPhoto = publicFileExists(padel.photo) ? padel.photo : undefined;
         vector-effect="non-scaling-stroke"></path>
     </svg>
     <div class="feature-head">
-      <span class="index">02</span>
       <h2 id="cycling-title">{t(locale, 'hobbies.cycling')}</h2>
     </div>
     <p class="feature-text">{localized(cycling.text, locale)}</p>
@@ -183,7 +181,6 @@ const padelPhoto = publicFileExists(padel.photo) ? padel.photo : undefined;
 
   <section class="feature padel" aria-labelledby="padel-title">
     <div class="feature-head">
-      <span class="index">03</span>
       <h2 id="padel-title">{t(locale, 'hobbies.padel')}</h2>
     </div>
     <div class="padel-grid">
@@ -233,7 +230,7 @@ const padelPhoto = publicFileExists(padel.photo) ? padel.photo : undefined;
 
   <footer class="hb-footer">
     <p>© {new Date().getFullYear()} {profile.name}</p>
-    <a href="#main" aria-label={t(locale, 'hobbies.top')}><span aria-hidden="true">↑</span></a>
+    <a href="#main" aria-label={t(locale, 'hobbies.top')}><Icon name="arrow" size={18} class="arrow-up" /></a>
   </footer>
 </HobbiesLayout>
 
@@ -245,6 +242,7 @@ const padelPhoto = publicFileExists(padel.photo) ? padel.photo : undefined;
     const format = new Intl.NumberFormat(document.documentElement.lang);
     const animate = (el: HTMLElement) => {
       const target = Number(el.dataset.count);
+      el.textContent = format.format(0);
       const start = performance.now();
       const duration = 1400;
       const step = (now: number) => {
@@ -264,10 +262,7 @@ const padelPhoto = publicFileExists(padel.photo) ? padel.photo : undefined;
       },
       { threshold: 0.6 },
     );
-    for (const el of values) {
-      el.textContent = format.format(0);
-      observer.observe(el);
-    }
+    for (const el of values) observer.observe(el);
   }
 </script>
 
@@ -369,16 +364,16 @@ const padelPhoto = publicFileExists(padel.photo) ? padel.photo : undefined;
     }
 
     .spin-slow {
-      animation: spin 30s linear infinite;
+      animation: spin 1.4s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
 
     .wheel {
-      animation: spin 5s linear infinite;
+      animation: spin 1.8s cubic-bezier(0.16, 1, 0.3, 1) 2 both;
     }
 
     .swing {
       transform-origin: 50% 100%;
-      animation: swing 3.5s ease-in-out infinite alternate;
+      animation: swing 0.9s ease-in-out 2 alternate both;
     }
   }
 
@@ -398,18 +393,7 @@ const padelPhoto = publicFileExists(padel.photo) ? padel.photo : undefined;
     }
   }
 
-  .kicker {
-    font-family: var(--hb-display);
-    font-weight: 600;
-    font-size: 0.9375rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--hb-muted);
-  }
 
-  .kicker span {
-    color: var(--hb-lime);
-  }
 
   .title {
     display: grid;
@@ -456,12 +440,6 @@ const padelPhoto = publicFileExists(padel.photo) ? padel.photo : undefined;
     text-transform: uppercase;
   }
 
-  .index {
-    font-weight: 600;
-    font-size: 1rem;
-    letter-spacing: 0.1em;
-    color: var(--hb-lime);
-  }
 
   .band-head h2 {
     font-weight: 800;
@@ -482,7 +460,7 @@ const padelPhoto = publicFileExists(padel.photo) ? padel.photo : undefined;
   .football-body {
     display: grid;
     gap: 12px;
-    max-width: 68ch;
+    max-width: 60ch;
     color: var(--hb-muted);
   }
 
@@ -585,15 +563,6 @@ const padelPhoto = publicFileExists(padel.photo) ? padel.photo : undefined;
     gap: 6px;
   }
 
-  .feature-head .index::after {
-    content: '';
-    display: inline-block;
-    width: 48px;
-    height: 2px;
-    margin-left: 12px;
-    vertical-align: middle;
-    background: var(--hb-lime);
-  }
 
   .feature-head h2 {
     font-weight: 800;
@@ -606,6 +575,13 @@ const padelPhoto = publicFileExists(padel.photo) ? padel.photo : undefined;
     max-width: 52ch;
     font-size: 1.1875rem;
     color: var(--hb-muted);
+  }
+
+  /* Decorative elevation line: only where there is room beside the heading. */
+  @media (max-width: 719px) {
+    .profile-line {
+      display: none;
+    }
   }
 
   .profile-line {
@@ -676,6 +652,10 @@ const padelPhoto = publicFileExists(padel.photo) ? padel.photo : undefined;
     object-fit: cover;
   }
 
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
   @media (min-width: 720px) {
     .stats {
       grid-template-columns: repeat(3, 1fr);
@@ -727,7 +707,7 @@ const padelPhoto = publicFileExists(padel.photo) ? padel.photo : undefined;
     margin: 0;
     padding: 20px;
     border: 1px solid var(--hb-line);
-    background: repeating-linear-gradient(90deg, transparent 0 22px, rgb(201 169 110 / 0.04) 22px 23px), var(--hb-bg-2);
+    background: var(--hb-bg-2);
   }
 
   .court svg,
@@ -739,7 +719,7 @@ const padelPhoto = publicFileExists(padel.photo) ? padel.photo : undefined;
 
   @media (prefers-reduced-motion: no-preference) {
     .court-ball {
-      animation: rally 3.2s ease-in-out infinite alternate;
+      animation: rally 1.6s ease-in-out 2 alternate both;
     }
   }
 
@@ -772,5 +752,18 @@ const padelPhoto = publicFileExists(padel.photo) ? padel.photo : undefined;
   .hb-footer a {
     text-decoration: none;
     color: var(--hb-lime);
+  }
+</style>
+
+<style>
+  /* Drawn arrows replace the old Unicode glyphs. */
+  :global(.arrow-out) {
+    display: inline-block;
+    vertical-align: -2px;
+    transform: rotate(-45deg);
+  }
+
+  :global(.arrow-up) {
+    transform: rotate(-90deg);
   }
 </style>

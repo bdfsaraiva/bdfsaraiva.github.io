@@ -1,18 +1,31 @@
-# Degree programmes referred to by acronym in courses.yaml (Universidade Lusófona).
-# Names only: the Teaching page section already says the level (Licenciaturas / Bachelor's degrees).
+# Degree programmes referenced from courses.yaml (Universidade Lusófona), by code.
+# `acronym: true` shows the code itself (with the full name as explanation and in the legend);
+# otherwise the localized name is shown. Names omit the level: the Teaching section already gives it.
 
 LEI:
-  en: Computer Engineering
-  pt: Engenharia Informática
+  acronym: true
+  name: { en: Computer Engineering, pt: Engenharia Informática }
 LIG:
-  en: Management Information Systems
-  pt: Informática de Gestão
+  acronym: true
+  name: { en: Management Information Systems, pt: Informática de Gestão }
 LEIRT:
-  en: Computer Engineering, Networks and Telecommunications
-  pt: Engenharia Informática, Redes e Telecomunicações
+  acronym: true
+  name:
+    en: Computer Engineering, Networks and Telecommunications
+    pt: Engenharia Informática, Redes e Telecomunicações
 LCID:
-  en: Data Science
-  pt: Ciência de Dados
+  acronym: true
+  name: { en: Data Science, pt: Ciência de Dados }
 LCMA:
-  en: Applied Mathematics and Computing
-  pt: Computação e Matemática Aplicada
+  acronym: true
+  name: { en: Applied Mathematics and Computing, pt: Computação e Matemática Aplicada }
+
+# Master's degrees
+MCD:
+  name: { en: Data Science, pt: Ciência de Dados }
+MIAAC:
+  name: { en: Applied Artificial Intelligence and Computing, pt: Inteligência Artificial Aplicada e Computação }
+
+# Postgraduate programmes
+PGDSA:
+  name: { en: 'Applied Data Science, Big Data and AI', pt: 'Data Science Aplicada, Big Data e AI' }
