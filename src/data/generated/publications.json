@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-16T14:25:49.305Z",
+  "updatedAt": "2026-11-23T16:58:29.658Z",
   "items": [
     {
       "id": "W7154743419",
@@ -226,7 +226,7 @@
         "doi": "https://doi.org/10.3390/fi17090412",
         "pdf": "https://www.mdpi.com/1999-5903/17/9/412/pdf?version=1757569386"
       },
-      "citations": 19,
+      "citations": 23,
       "abstract": "Large language models (LLMs) have advanced rapidly as tools for automating code generation in scientific research, yet their ability to interpret and use unfamiliar Python APIs for complex computational experiments remains poorly characterized. This study systematically benchmarks a selection of state-of-the-art LLMs in generating functional Python code for two increasingly challenging scenarios: conversational data analysis with the ParShift library, and synthetic data generation and clustering using pyclugen and scikit-learn. Both experiments use structured, zero-shot prompts specifying detailed requirements but omitting in-context examples. Model outputs are evaluated quantitatively for functional correctness and prompt compliance over multiple runs, and qualitatively by analyzing the errors produced when code execution fails. Results show that only a small subset of models consistently generate correct, executable code. GPT-4.1 achieved a 100% success rate across all runs in both experimental tasks, whereas most other models succeeded in fewer than half of the runs, with only Grok-3 and Mistral-Large approaching comparable performance. In addition to benchmarking LLM performance, this approach helps identify shortcomings in third-party libraries, such as unclear documentation or obscure implementation bugs. Overall, these findings highlight current limitations of LLMs for end-to-end scientific automation and emphasize the need for careful prompt design, comprehensive library documentation, and continued advances in language model capabilities.",
       "bibtex": "@article{fachada2025gpt,\n  title = {GPT-4.1 Sets the Standard in Automated Experiment Design Using Novel Python Libraries},\n  volume = {17},\n  issn = {1999-5903},\n  url = {http://dx.doi.org/10.3390/fi17090412},\n  doi = {10.3390/fi17090412},\n  number = {9},\n  journal = {Future Internet},\n  publisher = {MDPI AG},\n  author = {Fachada, Nuno and Fernandes, Daniel and Fernandes, Carlos M. and Ferreira-Saraiva, Bruno D. and Matos-Carvalho, João P.},\n  year = {2025},\n  month = sep,\n  pages = {412}\n}"
     },
@@ -306,7 +306,7 @@
       "id": "W4381854014",
       "title": "QiBERT - Classifying Online Conversations: Messages with BERT as a Feature",
       "year": 2023,
-      "date": "2023-06-24",
+      "date": "2023-06-25",
       "type": "conference",
       "venue": "IFIP advances in information and communication technology",
       "authors": [
